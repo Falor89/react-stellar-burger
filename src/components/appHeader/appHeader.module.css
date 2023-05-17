@@ -1,0 +1,49 @@
+.header{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    background-color: #1c1c21;
+}
+
+.navigation{
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
+}
+
+.menuItem {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity .4s ease;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.menuItem:hover{
+    opacity: .7;
+}
+
+.profile {
+    composes: menuItem;
+    margin: 0 auto;
+}
