@@ -1,10 +1,9 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingridientStyle from './Ingridient.module.css'
+import ingridientStyle from './Ingridient.module.css';
+import PropTypes from 'prop-types';
+
 
 const Ingridient = (props) => {
-    // randomCount = (max) => {
-    //     return Math.floor(Math.random() * max);
-    // }
     return (
         <div className={ingridientStyle.container}>
             <img style={{ margin: '0 , 4px' }} src={props.ingridient.image} alt={props.ingridient.name} />
@@ -17,6 +16,14 @@ const Ingridient = (props) => {
         </div>
     )
 }
+
+Ingridient.propTypes = {
+    ingridient: PropTypes.shape({
+        image: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }).isRequired
+};
 
 
 export default Ingridient;

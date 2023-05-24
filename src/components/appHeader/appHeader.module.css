@@ -1,13 +1,12 @@
-.header{
-    margin: 0;
-    padding: 0;
+.header {
     width: 100vw;
     background-color: #1c1c21;
+    margin: 0;
+    padding: 0;
 }
 
-.navigation{
+.nav {
     margin: 0 auto;
-    padding: 0;
     max-width: 1280px;
     display: flex;
     flex-direction: row;
@@ -19,19 +18,27 @@
     padding: 0;
     list-style: none;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     gap: 8px;
     flex: 1;
 }
 
-.menuItem {
-    margin: 0 auto;
+.item {
+    list-style-type: none;
+}
+
+.link {
+    text-decoration: none;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    color: #8585AD;
     gap: 8px;
     cursor: pointer;
     transition: opacity .4s ease;
+}
+
+.link:active {
+    color: #F2F2F3;
 }
 
 .icon {
@@ -39,11 +46,10 @@
     height: 24px;
 }
 
-.menuItem:hover{
+.link:hover {
     opacity: .7;
 }
 
 .profile {
-    composes: menuItem;
-    margin: 0 auto;
+    composes: item;
 }

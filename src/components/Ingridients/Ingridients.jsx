@@ -1,6 +1,8 @@
 import IngridientsStyle from './ingridients.module.css';
 import Ingridient from "../Ingridient/Ingridient";
 import data from "../../utils/data";
+import PropTypes from 'prop-types';
+
 
 const Ingridients = (props) => {
     const arr = data.filter((item) => item.type === props.type)
@@ -15,6 +17,11 @@ const Ingridients = (props) => {
             </ul>
         </div>
     )
+}
+
+Ingridients.propTypes = {
+    type: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
 }
 
 export default Ingridients
