@@ -8,11 +8,11 @@ export default class BurgerIngredients extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: 'one',
+            current: 'bun',
         }
     }
 
-    SetCurrent(e) {
+    setCurrent = (e) => {
         this.setState(({ current: e }))
     }
 
@@ -38,7 +38,7 @@ export default class BurgerIngredients extends Component {
                     </a>
                 </div>
                 <div className={burgerIngridientsStyles.container}>
-                    {ingridientType.map((item) => (<Ingridients key={item._id} type={item.type} text={item.text} />))}
+                    {ingridientType.map((item, index) => <Ingridients type={item.type} text={item.text} key={index} />)}
                 </div>
             </section>
         )

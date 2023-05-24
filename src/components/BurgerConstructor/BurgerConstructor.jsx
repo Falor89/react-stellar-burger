@@ -6,13 +6,14 @@ import { ingredientPropType } from '../../utils/prop-types';
 
 export default class BurgerConstructor extends Component {
     render() {
-        const arr = this.props.data.filter((item) => item.type === 'bun').map((item) => {
+        const arr = this.props.data.filter((item) => item.type === 'bun').map((item, index) => {
             return (
                 <div className='pl-10'>
                     <ConstructorElement
-                        key={item._id}
+                        type={index === 0 ? 'top' : 'bottom'}
+                        key={index}
                         isLocked={true}
-                        text={item.name}
+                        text={`${item.name} ${index === 0 ? '(верх)' : '(низ)'}`}
                         price={item.price}
                         thumbnail={item.image}
                     />
@@ -20,16 +21,16 @@ export default class BurgerConstructor extends Component {
             )
         });
 
-        const arrOthers = this.props.data.filter((item) => item.type !== 'bun').map((item) => {
+        const arrOthers = this.props.data.filter((item) => item.type !== 'bun').map((item, index) => {
             return (
                 <>
-                    <div className={burgerConstructorStyle.constructor__element} key={item._id}>
+                    <div className={burgerConstructorStyle.constructor__element}>
                         <span className='pr-4'>
                             <DragIcon type='primary' />
                         </span>
                         <div className={burgerConstructorStyle.item}>
                             <ConstructorElement
-                                key={item._id}
+                                key={index}
                                 text={item.name}
                                 price={item.price}
                                 thumbnail={item.image}
@@ -51,11 +52,10 @@ export default class BurgerConstructor extends Component {
                     <ul className={burgerConstructorStyle.container__ingredients}>
                         {arrOthers}
                     </ul>
-                    <div className={burgerConstructorStyle.section}>
-                        {arr[1]}
-                    </div>
                 </div>
-
+                <div className={burgerConstructorStyle.section}>
+                    {arr[1]}
+                </div>
                 <div className={burgerConstructorStyle.price}>
                     <p className='text text_type_digits-medium pr-10'>{costs}<CurrencyIcon /></p>
                     <Button htmlType="button" type='primary'>
@@ -67,6 +67,7 @@ export default class BurgerConstructor extends Component {
     }
 }
 
+
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredientPropType)
+    data: PropTypes.arrayOf(ingredientPropType).isRequired
 }
