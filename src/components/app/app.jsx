@@ -7,16 +7,18 @@ import React from 'react';
 import Modal from "../Modal/Modal";
 import OrderDetails from "../../OrderDetails/OrderDetails";
 import ingridientType from "../../utils/ingridientType";
+import IngridientDetails from "../IngridientDetails/IngridientDetails";
 
 
 const App = () => {
 
+  const [data, setData] = React.useState([])
 
   function getData() {
     fetch(`${api.url}`)
       .then(parseResponse)
       .then((res) => {
-        setIngridients(res.data)
+        setData(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -27,23 +29,23 @@ const App = () => {
     getData();
   }, []);
 
-
-  const [ingridients, setIngridients] = React.useState([])
-
   const [orderDetails, setOrderDetails] = React.useState(false);
   const [ingredientDetails, setIngredientDetails] = React.useState(false)
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
-  const [ingredientInModal, setIngredientInModal] = React.useState({});
+  const [ingredientModal, setIngredientModal] = React.useState({});
+
 
   const openModal = (item) => {
-    setIngredientInModal(item)
-    setIsIngredientDetailsOpened(true);
+    setIngredientModal(item)
+    setIngredientDetails(true);
   }
-
 
   const closeModal = () => {
     setOrderDetails(false)
     setIngredientDetails(false)
+  }
+
+  const openModalOrder = () => {
+    setOrderDetails(true)
   }
 
 
@@ -51,15 +53,22 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <main style={{ display: 'flex', margin: '0 auto', gap: '40px' }}>
-        <BurgerIngredients ingridients={ingridients} openModal={openModal} />
-        {/* <BurgerConstructor data={data} /> */}
+        <BurgerIngredients data={data} openModal={openModal} />
+        <BurgerConstructor data={data} openModal={openModalOrder}/>
       </main>
 
       {orderDetails && (
-        <Modal title='Детали ингридиетов' onClose={closeModal}>
+        <Modal title='Детали заказа' onClose={closeModal}>
           <OrderDetails />
         </Modal>
       )}
+
+      {ingredientDetails && (
+        <Modal title='Детали ингридиентов' onClose={closeModal}>
+          <IngridientDetails ingridient={ingredientModal} />
+        </Modal>
+      )}
+      
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingridientStyle from './Ingridient.module.css';
-import PropTypes from 'prop-types';
 import ingridientType from "../../utils/ingridientType";
 
 

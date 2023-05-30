@@ -1,11 +1,11 @@
 import burgerConstructorStyle from './burgerConstructor.module.css';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '../../utils/prop-types';
+import ingredientPropType from '../../utils/prop-types';
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = ({data, openModal}) => {
 
-    const arr = props.data.filter((item) => item.type === 'bun').map((item, index) => {
+    const arr = data.filter((item) => item.type === 'bun').map((item, index) => {
         return (
             <div className='pl-10'>
                 <ConstructorElement
@@ -20,7 +20,7 @@ const BurgerConstructor = (props) => {
         )
     });
 
-    const arrOthers = props.data.filter((item) => item.type !== 'bun').map((item, index) => {
+    const arrOthers = data.filter((item) => item.type !== 'bun').map((item, index) => {
         return (
             <>
                 <div className={burgerConstructorStyle.constructor__element}>
@@ -40,7 +40,6 @@ const BurgerConstructor = (props) => {
         )
     })
 
-    // const costs = props.data.map(item => item.price).reduce((a, b) => a + b)
 
 
     return (
@@ -58,7 +57,7 @@ const BurgerConstructor = (props) => {
             </div>
             <div className={burgerConstructorStyle.price}>
                 <p className='text text_type_digits-medium pr-10'>610<CurrencyIcon /></p>
-                <Button htmlType="button" type='primary' size='large' >
+                <Button htmlType="button" type='primary' size='large' onClick={() => openModal()} >
                     Оформить заказ
                 </Button>
             </div>
@@ -68,9 +67,10 @@ const BurgerConstructor = (props) => {
 
 
 
-// BurgerConstructor.propTypes = {
-//     data: PropTypes.arrayOf(ingredientPropType).isRequired
-// }
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(ingredientPropType).isRequired,
+    openModal: PropTypes.func.isRequired,
+}
 
 
 export default BurgerConstructor;

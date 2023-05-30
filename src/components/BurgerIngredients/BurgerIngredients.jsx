@@ -1,18 +1,27 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
 import burgerIngridientsStyles from './burgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingridientType from '../../utils/ingridientType'
-import ArrIngridients from '../ArrIngridients/ArrIngridients';
+import TypesOfIngridients from '../TypesOfIngridients/TypesOfIngridients';
 import PropTypes from 'prop-types';
-import selectIngridients from '../../utils/selectIngridients'
+import ingredientPropType from '../../utils/prop-types';
 
+const BurgerIngredients = ({ data, openModal }) => {
 
-const BurgerIngredients = ({ ingridients, openModal }) => {
+    const selectIngridients = (type, arr) => {
+        return arr.reduce((a, b) => {
+            if (b.type === type) {
+                a.push(b);
+            }
+            return a;
+        }, 
+            []
+        );
+    };
 
-    const bun = selectIngridients(ingridientType.Bun.type, ingridients)
-    const sauce = selectIngridients(ingridientType.Sauce.type, ingridients)
-    const main = selectIngridients(ingridientType.Main.type, ingridients)
+    const bun = selectIngridients(ingridientType.Bun.type, data)
+    const sauce = selectIngridients(ingridientType.Sauce.type, data)
+    const main = selectIngridients(ingridientType.Main.type, data)
 
     const [current, setCurrent] = useState('bun')
 
@@ -37,14 +46,14 @@ const BurgerIngredients = ({ ingridients, openModal }) => {
                 </a>
             </div>
             <div className={burgerIngridientsStyles.container}>
-                <a>
-                    <ArrIngridients ingridientType={bun} type={ingridientType.Bun} openModal={openModal} />
+                <a name='bun'>
+                    <TypesOfIngridients ingridientType={bun} type={ingridientType.Bun} openModal={openModal} />
                 </a>
-                <a>
-                    <ArrIngridients ingridientType={sauce} type={ingridientType.Sauce} openModal={openModal} />
+                <a name='sauce'>
+                    <TypesOfIngridients ingridientType={sauce} type={ingridientType.Sauce} openModal={openModal} />
                 </a>
-                <a>
-                    <ArrIngridients ingridientType={main} type={ingridientType.Main} openModal={openModal} />
+                <a name='main'>
+                    <TypesOfIngridients ingridientType={main} type={ingridientType.Main} openModal={openModal} />
                 </a>
             </div>
         </section>
@@ -53,6 +62,7 @@ const BurgerIngredients = ({ ingridients, openModal }) => {
 
 BurgerIngredients.propTypes = {
     openModal: PropTypes.func.isRequired,
+    data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 }
 
 export default BurgerIngredients;
