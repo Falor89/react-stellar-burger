@@ -5,7 +5,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { api, parseResponse } from "../Api/Api";
 import React from 'react';
 import Modal from "../Modal/Modal";
-import OrderDetails from "../../OrderDetails/OrderDetails";
+import OrderDetails from '../OrderDetails/OrderDetails'
 import ingridientType from "../../utils/ingridientType";
 import IngridientDetails from "../IngridientDetails/IngridientDetails";
 
