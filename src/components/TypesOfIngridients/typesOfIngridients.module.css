@@ -1,0 +1,23 @@
+.container {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0;
+    max-height: 756px;
+    overflow-y: auto;
+}
+
+
+.ingredients {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 32px;
+    justify-content: space-between;
+}
+
+.title {
+    list-style-type: none;
+    padding-bottom: 40px;
+}

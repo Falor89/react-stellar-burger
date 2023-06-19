@@ -1,0 +1,28 @@
+.container{
+    width: 720px;
+    max-height: 528px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.list{
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.listItem{
+    text-align: center;
+}
+
+.image{
+    margin: 0 auto;
+    width: 440px;
+    height: 240px;
+}
+
+.span{
+    text-align: center;
+}
