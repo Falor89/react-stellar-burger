@@ -1,12 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import burgerIngridientsStyles from './burgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingridientType from '../../utils/ingridientType'
 import TypesOfIngridients from '../TypesOfIngridients/TypesOfIngridients';
 import PropTypes from 'prop-types';
 import ingredientPropType from '../../utils/prop-types';
+import BurgerIngridientContext from "../../services/BurgerIngridientsContext";
 
-const BurgerIngredients = ({ data, openModal }) => {
+const BurgerIngredients = ({ openModal }) => {
+
+    const data = React.useContext(BurgerIngridientContext)
 
     const selectIngridients = (type, arr) => {
         return arr.reduce((a, b) => {
@@ -62,7 +65,6 @@ const BurgerIngredients = ({ data, openModal }) => {
 
 BurgerIngredients.propTypes = {
     openModal: PropTypes.func.isRequired,
-    data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 }
 
 export default BurgerIngredients;
