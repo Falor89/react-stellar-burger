@@ -1,5 +1,5 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingridientStyle from './Ingridient.module.css';
+import ingridientStyle from './Ingredient.module.css';
 import ingredientPropType from '../../utils/prop-types'
 
 const Ingridient = ({ ingridient }) => {

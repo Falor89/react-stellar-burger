@@ -1,13 +1,13 @@
 import React from "react";
-import ingridientDetailsStyles from './ingridientDetails.module.css';
+import ingridientDetailsStyles from './ingredientDetails.module.css';
 import ingredientPropType from "../../utils/prop-types";
 
-const IngridientDetails = ({ ingridient }) => {
+const IngredientDetails = ({ ingridient }) => {
     return (
         <div className={`${ingridientDetailsStyles.container} pt-10 pl-10 pr-10 pb-15`}>
             <h2 className='text text_type_main-large'>Детали ингридиета</h2>
             <img className={ingridientDetailsStyles.image} src={ingridient.image_large} alt={ingridient.name} />
-            <p style={{margin: '0 auto'}} className={`text text_type_main-medium pt-4 pb-8`}>{ingridient.name}</p>
+            <p style={{ margin: '0 auto' }} className={`text text_type_main-medium pt-4 pb-8`}>{ingridient.name}</p>
             <ul className={ingridientDetailsStyles.list}>
                 <li className={ingridientDetailsStyles.listItem}>
                     <p className="text text_type_main-default text_color_inactive">Калории, ккал</p>
@@ -30,10 +30,10 @@ const IngridientDetails = ({ ingridient }) => {
     )
 }
 
-    IngridientDetails.propTypes = {
-        ingridient: ingredientPropType.isRequired
-    }
+IngredientDetails.propTypes = {
+    ingridient: ingredientPropType.isRequired
+}
 
-export default IngridientDetails;
+export default IngredientDetails;
 
 
