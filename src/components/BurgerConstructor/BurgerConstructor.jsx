@@ -5,10 +5,36 @@ import ingredientPropType from '../../utils/prop-types';
 import React from 'react';
 import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
 import BurgerIngridientContext from '../../services/BurgerIngridientsContext';
+import Modal from "../Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import { http } from '../../utils/api';
 
 
-const BurgerConstructor = ({openModal}) => {
 
+const BurgerConstructor = () => {
+
+    const makeOrder = () => http('orders', 'POST', JSON.stringify({ "ingredients": ["643d69a5c3f7b9001cfa093c"] }))
+        .then((orderNumber) => setOrderNumber(orderNumber))
+        .catch((err) => alert(`${(`Ошибка: ${err}`)}  + ${setOrderNumber(null)}`))
+
+    const [orderNumber = {
+        name: '',
+        order: {
+            number: ''
+        },
+        success: false
+    }, setOrderNumber] = React.useState();
+
+    const [orderDetails, setOrderDetails] = React.useState(false);
+
+    const openModalOrder = () => {
+        setOrderDetails(true)
+        makeOrder(orderNumber)
+    }
+
+    const closeModal = () => {
+        setOrderDetails(false)
+    }
     const data = React.useContext(BurgerIngridientContext);
 
     const bun = React.useMemo(
@@ -19,49 +45,14 @@ const BurgerConstructor = ({openModal}) => {
     const price = React.useMemo(() => {
         return (
             (data.bun ? data.bun.price * 2 : 0) + data.reduce((a, b) => a + b.price, 0)
-    );}, [data]);
-
-    // const arr = data.filter((item) => item.type === 'bun').map((item, index) => {
-    //     return (
-    //         <div className='pl-10' key={item._id}>
-    //             <ConstructorElement
-    //                 key={item._id}
-    //                 type={index === 0 ? 'top' : 'bottom'}
-    //                 isLocked={true}
-    //                 text={`${item.name} ${index === 0 ? '(верх)' : '(низ)'}`}
-    //                 price={item.price}
-    //                 thumbnail={item.image}
-    //             />
-    //         </div>
-    //     )
-    // });
-
-    // const arrOthers = data.filter((item) => item.type !== 'bun').map((item, index) => {
-    //     return (
-    //         <React.Fragment key={item._id}>
-    //             <div className={burgerConstructorStyle.constructor__element}>
-    //                 <span className='pr-4'>
-    //                     <DragIcon type='primary' />
-    //                 </span>
-    //                 <div className={burgerConstructorStyle.item}>
-    //                     <ConstructorElement
-    //                         key={item._id}
-    //                         text={item.name}
-    //                         price={item.price}
-    //                         thumbnail={item.image}
-    //                     />
-    //                 </div>
-    //             </div>
-    //         </React.Fragment>
-    //     )
-    // })
-
+        );
+    }, [data]);
 
 
     return (
         < section className={burgerConstructorStyle.section} style={{ paddingTop: '100px' }}>
             <div className={burgerConstructorStyle.section}>
-                {bun && 
+                {bun &&
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -72,57 +63,35 @@ const BurgerConstructor = ({openModal}) => {
                 }
             </div>
             <div className={burgerConstructorStyle.container}>
-                <ConstructorDetails/>
+                <ConstructorDetails />
             </div>
             <div className={burgerConstructorStyle.section}>
-            {bun &&
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={`${bun.name} (низ)`}
-                    price={bun.price}
-                    thumbnail={bun.image_mobile}
-                />
+                {bun &&
+                    <ConstructorElement
+                        type="bottom"
+                        isLocked={true}
+                        text={`${bun.name} (низ)`}
+                        price={bun.price}
+                        thumbnail={bun.image_mobile}
+                    />
                 }
             </div>
             <div className={burgerConstructorStyle.price}>
                 <p className='text text_type_digits-medium pr-10'>
                     {price}
                     <CurrencyIcon /></p>
-                <Button htmlType="button" type='primary' size='large' onClick={() => openModal()} >
+                <Button htmlType="button" type='primary' size='large' onClick={() => openModalOrder()} >
                     Оформить заказ
                 </Button>
             </div>
+            {orderDetails && (
+                <Modal title='Детали заказа' onClose={closeModal}>
+                    <OrderDetails orderNumber={orderNumber} />
+                </Modal>
+            )}
         </section >
     )
 }
 
-
-
-BurgerConstructor.propTypes = {
-    openModal: PropTypes.func.isRequired,
-}
-
-
 export default BurgerConstructor;
 
-
-{/* < section className={burgerConstructorStyle.section} style={{ paddingTop: '100px' }} key={data._id}>
-<div className={burgerConstructorStyle.section}>
-    {arr[0]}
-</div>
-<div className={burgerConstructorStyle.container}>
-    <ul className={burgerConstructorStyle.container__ingredients}>
-        {arrOthers}
-    </ul>
-</div>
-<div className={burgerConstructorStyle.section}>
-    {arr[1]}
-</div>
-<div className={burgerConstructorStyle.price}>
-    <p className='text text_type_digits-medium pr-10'>610<CurrencyIcon /></p>
-    <Button htmlType="button" type='primary' size='large' onClick={() => openModal()} >
-        Оформить заказ
-    </Button>
-</div>
-</section > */}

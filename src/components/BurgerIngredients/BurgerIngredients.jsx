@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import burgerIngridientsStyles from './burgerIngredients.module.css';
+import React, { useState, useContext } from "react";
+import burgerIngredientsStyles from './burgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingridientType from '../../utils/ingridientType'
-import TypesOfIngridients from '../TypesOfIngridients/TypesOfIngridients';
+import ingridientType from '../../utils/ingredientType'
+import TypesOfIngridients from '../TypesOfIngredients/TypesOfIngredients';
 import PropTypes from 'prop-types';
 import ingredientPropType from '../../utils/prop-types';
 import BurgerIngridientContext from "../../services/BurgerIngridientsContext";
 
-const BurgerIngredients = ({ openModal }) => {
+const BurgerIngredients = () => {
 
-    const data = React.useContext(BurgerIngridientContext)
+    const data = useContext(BurgerIngridientContext)
 
     const selectIngridients = (type, arr) => {
         return arr.reduce((a, b) => {
@@ -17,7 +17,7 @@ const BurgerIngredients = ({ openModal }) => {
                 a.push(b);
             }
             return a;
-        }, 
+        },
             []
         );
     };
@@ -29,7 +29,7 @@ const BurgerIngredients = ({ openModal }) => {
     const [current, setCurrent] = useState('bun')
 
     return (
-        <section className={burgerIngridientsStyles.section}>
+        <section className={burgerIngredientsStyles.section}>
             <h1 className='text text_type_main-large pt-10'>Соберите бургер</h1>
             <div style={{ display: 'flex' }}>
                 <a href="#bun">
@@ -48,23 +48,20 @@ const BurgerIngredients = ({ openModal }) => {
                     </Tab>
                 </a>
             </div>
-            <div className={burgerIngridientsStyles.container}>
+            <div className={burgerIngredientsStyles.container}>
                 <a name='bun'>
-                    <TypesOfIngridients ingridientType={bun} type={ingridientType.Bun} openModal={openModal} />
+                    <TypesOfIngridients ingridientType={bun} type={ingridientType.Bun} />
                 </a>
                 <a name='sauce'>
-                    <TypesOfIngridients ingridientType={sauce} type={ingridientType.Sauce} openModal={openModal} />
+                    <TypesOfIngridients ingridientType={sauce} type={ingridientType.Sauce} />
                 </a>
                 <a name='main'>
-                    <TypesOfIngridients ingridientType={main} type={ingridientType.Main} openModal={openModal} />
+                    <TypesOfIngridients ingridientType={main} type={ingridientType.Main} />
                 </a>
             </div>
         </section>
     )
 }
 
-BurgerIngredients.propTypes = {
-    openModal: PropTypes.func.isRequired,
-}
 
 export default BurgerIngredients;
