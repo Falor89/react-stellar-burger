@@ -1,17 +1,17 @@
 import React, {useContext} from "react";
 import { DragIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import constructorDetailsStyles from './constructorDetails.module.css';
-import BurgerIngridientContext from "../../services/BurgerIngridientsContext";
+import './ConstructorDetails.css';
+import BurgerIngredientContext from "../../services/BurgerIngredientsContext";
 
 const ConstructorDetails = () => {
-    const data = useContext(BurgerIngridientContext);
+    const data = useContext(BurgerIngredientContext);
 
-    const ingridients = data.filter((item) => item.type !== 'bun');
+    const ingredients = data.filter((item) => item.type !== 'bun');
 
     return(
-        <ul className={`${constructorDetailsStyles.list} pr-2`}>
-            {ingridients.map((item) => (
-                            <li className={`${constructorDetailsStyles.listItem}`} key={item._id}>
+        <ul className={`ConstructorDetails-list pr-2`}>
+            {ingredients.map((item) => (
+                            <li className='ConstructorDetails-listItem' key={item._id}>
                             <DragIcon type='primary' />
                             <ConstructorElement
                                 text={item.name}

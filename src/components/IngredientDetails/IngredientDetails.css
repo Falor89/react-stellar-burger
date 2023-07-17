@@ -1,4 +1,4 @@
-.container{
+.IngredientDetails-container{
     width: 720px;
     max-height: 528px;
     border-radius: 40px;
@@ -6,23 +6,19 @@
     flex-direction: column;
 }
 
-.list{
+.IngredientDetails-list{
     list-style-type: none;
     display: flex;
     justify-content: center;
     column-gap: 20px;
 }
 
-.listItem{
+.IngredientDetails-listItem{
     text-align: center;
 }
 
-.image{
+.IngredientDetails-image{
     margin: 0 auto;
     width: 440px;
     height: 240px;
-}
-
-.span{
-    text-align: center;
 }

@@ -1,8 +1,8 @@
-.section {
+.Ingredients-section {
     width: 600px;
 }
 
-.container {
+.Ingredients-container {
     margin: 40px 0 0 0;
     padding: 0;
     display: flex;
@@ -15,11 +15,11 @@
     overflow-x: hidden;
 }
 
-.container::-webkit-scrollbar {
+.Ingredients-container::-webkit-scrollbar {
     width: 8px;
     background: #2F2F37;
 }
 
-.container::-webkit-scrollbar-thumb {
+.Ingredients-container::-webkit-scrollbar-thumb {
     background: #8585AD;
 }

@@ -1,24 +1,24 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingridientStyle from './Ingredient.module.css';
+import './Ingredient.css';
 import ingredientPropType from '../../utils/prop-types'
 
-const Ingridient = ({ ingridient }) => {
+const Ingredient = ({ ingredient }) => {
     return (
-        <div className={ingridientStyle.container}>
-            <img style={{ margin: '0 , 4px' }} src={ingridient.image} alt={ingridient.name} />
-            <div className={ingridientStyle.price}>
-                <span className="text text_type_digits-default">{ingridient.price}</span>
+        <div className='Ingredient-container'>
+            <img style={{ margin: '0 , 4px' }} src={ingredient.image} alt={ingredient.name} />
+            <div className='Ingredient-price'>
+                <span className="text text_type_digits-default">{ingredient.price}</span>
                 <CurrencyIcon type="primary" />
             </div>
-            <p className={`text text_type_main-default ${ingridientStyle.text}`} style={{ textAlign: 'center' }}>{ingridient.name}</p>
+            <p className={`text text_type_main-default Ingredient-text`} style={{ textAlign: 'center' }}>{ingredient.name}</p>
             <Counter count={1} size="default" />
         </div>
     )
 }
 
-Ingridient.propTypes = {
-    ingridient: ingredientPropType.isRequired
+Ingredient.propTypes = {
+    ingredient: ingredientPropType.isRequired
 };
 
 
-export default Ingridient;
+export default Ingredient;

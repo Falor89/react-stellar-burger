@@ -1,10 +1,10 @@
-import burgerConstructorStyle from './burgerConstructor.module.css';
+import './BurgerConstructor.css';
 import PropTypes from 'prop-types';
-import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientPropType from '../../utils/prop-types';
 import React from 'react';
 import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
-import BurgerIngridientContext from '../../services/BurgerIngridientsContext';
+import BurgerIngredientContext from '../../services/BurgerIngredientsContext';
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { http } from '../../utils/api';
@@ -35,7 +35,7 @@ const BurgerConstructor = () => {
     const closeModal = () => {
         setOrderDetails(false)
     }
-    const data = React.useContext(BurgerIngridientContext);
+    const data = React.useContext(BurgerIngredientContext);
 
     const bun = React.useMemo(
         () => data.find((item) => item.name === 'Краторная булка N-200i'),
@@ -50,8 +50,8 @@ const BurgerConstructor = () => {
 
 
     return (
-        < section className={burgerConstructorStyle.section} style={{ paddingTop: '100px' }}>
-            <div className={burgerConstructorStyle.section}>
+        < section className='Constructor-section' style={{ paddingTop: '100px' }}>
+            <div className='Constructor-section'>
                 {bun &&
                     <ConstructorElement
                         type="top"
@@ -62,10 +62,10 @@ const BurgerConstructor = () => {
                     />
                 }
             </div>
-            <div className={burgerConstructorStyle.container}>
+            <div className='Constructor-container'>
                 <ConstructorDetails />
             </div>
-            <div className={burgerConstructorStyle.section}>
+            <div className='Constructor-section'>
                 {bun &&
                     <ConstructorElement
                         type="bottom"
@@ -76,7 +76,7 @@ const BurgerConstructor = () => {
                     />
                 }
             </div>
-            <div className={burgerConstructorStyle.price}>
+            <div className='Constructor-price'>
                 <p className='text text_type_digits-medium pr-10'>
                     {price}
                     <CurrencyIcon /></p>

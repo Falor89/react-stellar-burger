@@ -1,4 +1,4 @@
-.list {
+.ConstructorDetails-list {
     margin: 0;
     padding: 0;
     width: 568px;
@@ -7,7 +7,7 @@
     gap: 16px;
 }
 
-.listItem {
+.ConstructorDetails-listItem {
     list-style: none;
     display: flex;
     align-items: center;
