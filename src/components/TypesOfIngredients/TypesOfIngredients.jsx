@@ -1,4 +1,4 @@
-import './TypesOfIngredients.css';
+import styles from './typesOfIngredients.module.css'
 import Ingredient from "../Ingredient/Ingredient";
 import PropTypes from 'prop-types';
 import React from 'react'
@@ -20,9 +20,9 @@ const TypesOfIngredients = ({ ingridientType, type }) => {
     }
 
     return (
-        <div className='TypesOfIngredients-title'>
+        <div className={styles.title}>
             <h2 className='text text_type_main-medium'>{type.text}</h2>
-            <ul className={`TypesOfIngredients-ingredients pl-4 pr-2`}>
+            <ul className={`${styles.ingredients} pl-4 pr-2`}>
                 {ingridientType.map((item) => (
                     <li onClick={() => openModal(item)} key={item._id}>
                         <Ingredient ingredient={item} onClick={openModal} />

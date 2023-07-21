@@ -1,4 +1,4 @@
-.Modal-container {
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@
     transition: visibility 0.1s linear, opacity 0.1s linear;
 }
 
-.Modal-closeButton {
+.closeButton {
     padding: 0;
     background-color: transparent;
     position: absolute;
@@ -26,6 +26,6 @@
     transition: opacity .3s ease-in;
 }
 
-.Modal-closeButton:hover {
+.closeButton:hover {
     opacity: 0.6;
 }

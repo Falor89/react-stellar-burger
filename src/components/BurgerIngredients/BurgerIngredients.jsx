@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import './BurgerIngredients.css';
+import styles from './burgerIngredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientType from '../../utils/ingredientType'
 import TypesOfIngredients from '../TypesOfIngredients/TypesOfIngredients';
@@ -19,9 +19,9 @@ const BurgerIngredients = () => {
     const [current, setCurrent] = useState('bun')
 
     return (
-        <section className='Ingredients-section'>
+        <section className={styles.section}>
             <h1 className='text text_type_main-large pt-10'>Соберите бургер</h1>
-            <div style={{ display: 'flex' }}>
+            <div className={styles.tab}>
                     <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                         Булки
                     </Tab>
@@ -32,7 +32,7 @@ const BurgerIngredients = () => {
                         Начинки
                     </Tab>
             </div>
-            <div className='Ingredients-container'>
+            <div className={styles.container}>
                 <a name='bun'>
                     <TypesOfIngredients ingridientType={bun} type={ingredientType.bun} />
                 </a>

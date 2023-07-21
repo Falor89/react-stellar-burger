@@ -1,4 +1,4 @@
-import './BurgerConstructor.css';
+import styles from './burgerConstructor.module.css';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientPropType from '../../utils/prop-types';
@@ -50,8 +50,8 @@ const BurgerConstructor = () => {
 
 
     return (
-        < section className='Constructor-section' style={{ paddingTop: '100px' }}>
-            <div className='Constructor-section'>
+        < section className={styles.section}>
+            <div className={styles.section}>
                 {bun &&
                     <ConstructorElement
                         type="top"
@@ -62,10 +62,10 @@ const BurgerConstructor = () => {
                     />
                 }
             </div>
-            <div className='Constructor-container'>
+            <div className={styles.container}>
                 <ConstructorDetails />
             </div>
-            <div className='Constructor-section'>
+            <div className={styles.section}>
                 {bun &&
                     <ConstructorElement
                         type="bottom"
@@ -76,7 +76,7 @@ const BurgerConstructor = () => {
                     />
                 }
             </div>
-            <div className='Constructor-price'>
+            <div className={styles.price}>
                 <p className='text text_type_digits-medium pr-10'>
                     {price}
                     <CurrencyIcon /></p>

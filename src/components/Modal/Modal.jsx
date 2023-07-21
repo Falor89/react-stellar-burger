@@ -1,5 +1,5 @@
 import React from "react";
-import './Modal.css';
+import styles from './modal.module.css'
 import PropTypes from 'prop-types';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { createPortal } from "react-dom";
@@ -23,8 +23,8 @@ const Modal = ({ onClose, children }) => {
 
     return createPortal(
         <>
-            <div className='Modal-container'>
-                <button type="button" className='Modal-closeButton'>
+            <div className={styles.container}>
+                <button type="button" className={styles.closeButton}>
                     <CloseIcon type='primary' onClick={onClose} />
                 </button>
                 {children}

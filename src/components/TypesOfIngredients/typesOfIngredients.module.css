@@ -1,4 +1,4 @@
-.TypesOfIngredients-container {
+.container {
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,7 @@
 }
 
 
-.TypesOfIngredients-ingredients {
+.ingredients {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -17,7 +17,7 @@
     justify-content: space-between;
 }
 
-.TypesOfIngredients-title {
+.title {
     list-style-type: none;
     padding-bottom: 40px;
 }

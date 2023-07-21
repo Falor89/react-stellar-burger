@@ -1,11 +1,11 @@
-.App-header {
+.header {
     width: 100vw;
     background-color: #1c1c21;
     margin: 0;
     padding: 0;
 }
 
-.App-nav {
+.nav {
     margin: 0 auto;
     max-width: 1280px;
     display: flex;
@@ -13,7 +13,7 @@
     align-items: center;
 }
 
-.App-menu {
+.menu {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -23,11 +23,11 @@
     flex: 1;
 }
 
-.App-item {
+.item {
     list-style-type: none;
 }
 
-.App-link {
+.link {
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -41,7 +41,7 @@
     color: #F2F2F3;
 }
 
-.App-icon {
+.icon {
     width: 24px;
     height: 24px;
 }
@@ -50,6 +50,6 @@
     opacity: .7;
 }
 
-.App-profile {
+.profile {
     composes: item;
 }

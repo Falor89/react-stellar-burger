@@ -12,6 +12,12 @@ const parseResponse = (res) => {
 
     return Promise.reject(new Error(`Ошибка со статус-кодом ${res.status}`))
 }
+/** @function
+ * @name http - Обработка http запросов
+ * @param {string/number/data} url - Адрес запроса
+ * @param {string} method - Метод запроса
+ * @param {object} body - Тело запроса
+ * @returns Объект ответа */
 
 const http = (url, method = 'GET', body) => fetch(`${api.url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
 
