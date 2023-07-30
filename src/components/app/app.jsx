@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div className={styles.container}>
       <AppHeader />
-      <main style={{ display: 'flex', margin: '0 auto', gap: '40px' }}>
+      <main className={styles.main}>
         <BurgerIngredientContext.Provider value={data}>
           <BurgerIngredients />
           <BurgerConstructor />
