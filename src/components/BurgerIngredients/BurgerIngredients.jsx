@@ -1,68 +1,50 @@
-import { useState } from "react";
-import burgerIngridientsStyles from './burgerIngredients.module.css';
+import React, { useState, useContext } from "react";
+import styles from './burgerIngredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingridientType from '../../utils/ingridientType'
-import TypesOfIngridients from '../TypesOfIngridients/TypesOfIngridients';
+import ingredientType from '../../utils/ingredientType'
+import TypesOfIngredients from '../TypesOfIngredients/TypesOfIngredients';
 import PropTypes from 'prop-types';
 import ingredientPropType from '../../utils/prop-types';
+import BurgerIngredientContext from "../../services/BurgerIngredientsContext";
+import { selectIngredients } from "../../utils/selectIngredients";
 
-const BurgerIngredients = ({ data, openModal }) => {
+const BurgerIngredients = () => {
 
-    const selectIngridients = (type, arr) => {
-        return arr.reduce((a, b) => {
-            if (b.type === type) {
-                a.push(b);
-            }
-            return a;
-        }, 
-            []
-        );
-    };
+    const data = useContext(BurgerIngredientContext)
 
-    const bun = selectIngridients(ingridientType.Bun.type, data)
-    const sauce = selectIngridients(ingridientType.Sauce.type, data)
-    const main = selectIngridients(ingridientType.Main.type, data)
+    const bun = selectIngredients(ingredientType.bun.type, data)
+    const sauce = selectIngredients(ingredientType.sauce.type, data)
+    const main = selectIngredients(ingredientType.main.type, data)
 
     const [current, setCurrent] = useState('bun')
 
     return (
-        <section className={burgerIngridientsStyles.section}>
+        <section className={styles.section}>
             <h1 className='text text_type_main-large pt-10'>Соберите бургер</h1>
-            <div style={{ display: 'flex' }}>
-                <a href="#bun">
+            <div className={styles.tab}>
                     <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                         Булки
                     </Tab>
-                </a>
-                <a href="#sauce">
                     <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
                         Соусы
                     </Tab>
-                </a>
-                <a href="#main">
                     <Tab value="main" active={current === 'main'} onClick={setCurrent}>
                         Начинки
                     </Tab>
-                </a>
             </div>
-            <div className={burgerIngridientsStyles.container}>
+            <div className={styles.container}>
                 <a name='bun'>
-                    <TypesOfIngridients ingridientType={bun} type={ingridientType.Bun} openModal={openModal} />
+                    <TypesOfIngredients ingridientType={bun} type={ingredientType.bun} />
                 </a>
                 <a name='sauce'>
-                    <TypesOfIngridients ingridientType={sauce} type={ingridientType.Sauce} openModal={openModal} />
+                    <TypesOfIngredients ingridientType={sauce} type={ingredientType.sauce} />
                 </a>
                 <a name='main'>
-                    <TypesOfIngridients ingridientType={main} type={ingridientType.Main} openModal={openModal} />
+                    <TypesOfIngredients ingridientType={main} type={ingredientType.main} />
                 </a>
             </div>
         </section>
     )
-}
-
-BurgerIngredients.propTypes = {
-    openModal: PropTypes.func.isRequired,
-    data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 }
 
 export default BurgerIngredients;
