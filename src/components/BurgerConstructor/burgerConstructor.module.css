@@ -5,7 +5,7 @@
     gap: 10px;
 }
 
-.section:first-of-type{
+.section:first-of-type {
     padding-top: 100px;
 }
 
@@ -36,4 +36,30 @@
     margin: 0 0 0 auto;
     justify-content: baseline;
     align-items: center;
+}
+
+.top {
+    display: flex;
+    left: 20px;
+    width: 88%;
+    height: 77px;
+    position: relative;
+    border: solid 2px #c9c2ec;
+    border-radius: 88px 88px 40px 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.bottom {
+    display: flex;
+    left: 20px;
+    width: 88%;
+    height: 77px;
+    position: relative;
+    border: solid 2px #c9c2ec;
+    border-radius: 40px 40px 88px 88px;
+}
+
+.overbun {
+    border-radius: 5px solid blue;
 }

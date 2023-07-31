@@ -1,11 +1,11 @@
 import styles from './typesOfIngredients.module.css'
 import Ingredient from "../Ingredient/Ingredient";
 import PropTypes from 'prop-types';
-import React from 'react'
+import React, { forwardRef } from 'react'
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-const TypesOfIngredients = ({ ingridientType, type }) => {
+const TypesOfIngredients = forwardRef(({ categories, type }, ref) => {
 
     const [ingredientDetails, setIngredientDetails] = React.useState(false);
     const [ingredientModal, setIngredientModal] = React.useState({});
@@ -20,10 +20,10 @@ const TypesOfIngredients = ({ ingridientType, type }) => {
     }
 
     return (
-        <div className={styles.title}>
+        <div className={styles.title} ref={ref}>
             <h2 className='text text_type_main-medium'>{type.text}</h2>
             <ul className={`${styles.ingredients} pl-4 pr-2`}>
-                {ingridientType.map((item) => (
+                {categories.map((item) => (
                     <li onClick={() => openModal(item)} key={item._id}>
                         <Ingredient ingredient={item} onClick={openModal} />
                     </li>
@@ -37,7 +37,7 @@ const TypesOfIngredients = ({ ingridientType, type }) => {
             )}
         </div>
     )
-}
+})
 
 TypesOfIngredients.propTypes = {
     ingridientType: PropTypes.array.isRequired,

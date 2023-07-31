@@ -1,95 +1,172 @@
 import styles from './burgerConstructor.module.css';
 import PropTypes from 'prop-types';
-import { ConstructorElement, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientPropType from '../../utils/prop-types';
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
-import BurgerIngredientContext from '../../services/BurgerIngredientsContext';
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { http } from '../../utils/api';
-
+import { getOrder } from "../../services/actions/order";
+import { addBun, deleteItem } from "../../services/actions/constructor";
+import { useDrop } from 'react-dnd';
+import bunImage from './image/PyhkoigriqQ8Q4t7EziOdA.png';
+import { closeOrderModal } from '../../services/actions/order';
 
 
 const BurgerConstructor = () => {
 
-    const makeOrder = () => http('orders', 'POST', JSON.stringify({ "ingredients": ["643d69a5c3f7b9001cfa093c"] }))
-        .then((orderNumber) => setOrderNumber(orderNumber))
-        .catch((err) => alert(`${(`Ошибка: ${err}`)}  + ${setOrderNumber(null)}`))
-
-    const [orderNumber = {
-        name: '',
-        order: {
-            number: ''
-        },
-        success: false
-    }, setOrderNumber] = React.useState();
-
-    const [orderDetails, setOrderDetails] = React.useState(false);
-
-    const openModalOrder = () => {
-        setOrderDetails(true)
-        makeOrder(orderNumber)
-    }
-
-    const closeModal = () => {
-        setOrderDetails(false)
-    }
-    const data = React.useContext(BurgerIngredientContext);
-
-    const bun = React.useMemo(
-        () => data.find((item) => item.name === 'Краторная булка N-200i'),
-        [data],
-    )
-
-    const price = React.useMemo(() => {
+    /* Обращение к store */
+    const element = useSelector(store => store.burgerConstructor.element);
+    const bun = useSelector(store => store.burgerConstructor.bun);
+    const productsIds = useSelector(store => store.burgerConstructor.productsIds);
+    //Функция для использование подсчёта стоимости
+    const price = useMemo(() => {
         return (
-            (data.bun ? data.bun.price * 2 : 0) + data.reduce((a, b) => a + b.price, 0)
+            (bun ? bun.price * 1 : 0) +
+            element.reduce((s, v) => s + v.price, 0)
         );
-    }, [data]);
+    }, [bun, element]);
 
+    const dispatch = useDispatch();
+
+    //Открытие модального окна оформить заказ
+    const orderModal = (ids) => {
+        dispatch(getOrder(ids));
+    };
+
+    const [{ isHover }, drop] = useDrop({
+        accept: 'ingredient',
+        drop({ ingredient }) {
+            dispatch(addBun(ingredient));
+        },
+        collect: (monitor) => ({
+            isHover: monitor.canDrop(),
+        }),
+    });
+    //Удаление ингредиента из выбранного списка
+    const handleDelete = (item) => {
+        dispatch(deleteItem(item));
+    }
+
+    const orderNumber = useSelector(store => store.order.orderNumber);
+    const handleCloseOrder = useCallback(() => {
+        dispatch(closeOrderModal());
+    }, [dispatch]);
 
     return (
-        < section className={styles.section}>
-            <div className={styles.section}>
-                {bun &&
-                    <ConstructorElement
+        <div className={`${styles.section} pt-25 pl-6`}>
+            <div сlassname={isHover
+                ? `${styles.top} ${styles.overbun}`
+                : `${styles.top} `
+            } >
+                <div className={`${styles.container} pr-2`} ref={drop}>
+
+                    {bun ? (
+                        < ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={bun.name + " (верх)"}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                            key={`top:${bun._id}`}
+
+                        />
+                    ) : (<ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={bun.name + " (верх)"}
-                        price={bun.price}
-                        thumbnail={bun.image_mobile}
+                        text="Выберите булку из списка слева"
+                        price={0}
+                        thumbnail={bunImage}
                     />
-                }
-            </div>
-            <div className={styles.container}>
-                <ConstructorDetails />
-            </div>
-            <div className={styles.section}>
-                {bun &&
-                    <ConstructorElement
+                    )}
+
+                    {!bun && <p className='text text_type_digits-default text_color_inactive pt-8 pl-10'>Выберите и перетащите слева начинки и соусы для бургера</p>}
+                    <div className={`${styles.card} text_type_main-default mt-4 mb-4`}>
+                        {element && element.length > 0 && element.map((item, index) => (
+                            <ConstructorDetails
+                                key={item.uId}
+                                item={item}
+                                index={index}
+                                handleDelete={handleDelete} />
+                        ))}
+
+                    </div>
+                    {bun ? (
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text={`${bun.name} (низ)`}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                            key={`bottom:${bun._id}`}
+                        />
+                    ) : (< ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={`${bun.name} (низ)`}
-                        price={bun.price}
-                        thumbnail={bun.image_mobile}
+                        text="Выберите булку из списка слева"
+                        price={0}
+                        thumbnail={bunImage}
+
                     />
-                }
+                    )}
+
+                </div>
+                <div className={`${styles.money} mt-10`}>
+                    <h3 className='text text_type_digits-medium mr-10'>
+                        {price}
+                        <CurrencyIcon type="primary" />
+                    </h3>
+                    <Button type="primary" size="large" onClick={() => { orderModal(productsIds) }}>Оформить заказ</Button>
+
+                </div>
             </div>
-            <div className={styles.price}>
-                <p className='text text_type_digits-medium pr-10'>
-                    {price}
-                    <CurrencyIcon /></p>
-                <Button htmlType="button" type='primary' size='large' onClick={() => openModalOrder()} >
-                    Оформить заказ
-                </Button>
-            </div>
-            {orderDetails && (
-                <Modal title='Детали заказа' onClose={closeModal}>
-                    <OrderDetails orderNumber={orderNumber} />
+            {orderNumber && (
+                <Modal title='Детали заказа' onClose={handleCloseOrder}>
+                    <OrderDetails />
                 </Modal>
             )}
-        </section >
+        </div>
+        // < section className={styles.section}>
+        //     <div className={styles.section}>
+        //         {bun &&
+        //             <ConstructorElement
+        //                 type="top"
+        //                 isLocked={true}
+        //                 text={bun.name + " (верх)"}
+        //                 price={bun.price}
+        //                 thumbnail={bun.image_mobile}
+        //             />
+        //         }
+        //     </div>
+        //     <div className={styles.container}>
+        //         <ConstructorDetails />
+        //     </div>
+        //     <div className={styles.section}>
+        //         {bun &&
+        //             <ConstructorElement
+        //                 type="bottom"
+        //                 isLocked={true}
+        //                 text={`${bun.name} (низ)`}
+        //                 price={bun.price}
+        //                 thumbnail={bun.image_mobile}
+        //             />
+        //         }
+        //     </div>
+        //     <div className={styles.price}>
+        //         <p className='text text_type_digits-medium pr-10'>
+        //             {price}
+        //             <CurrencyIcon /></p>
+        //         <Button htmlType="button" type='primary' size='large' onClick={() => openModalOrder()} >
+        //             Оформить заказ
+        //         </Button>
+        //     </div>
+        //     {orderDetails && (
+        //         <Modal title='Детали заказа' onClose={closeModal}>
+        //             <OrderDetails orderNumber={orderNumber} />
+        //         </Modal>
+        //     )}
+        // </section >
     )
 }
 

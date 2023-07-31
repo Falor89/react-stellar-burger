@@ -21,8 +21,21 @@ const parseResponse = (res) => {
 
 const http = (url, method = 'GET', body) => fetch(`${api.url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
 
-const getData = (data, setData) => http('ingredients')
-.then(({ data }) => setData(data))
-.catch((err) => alert(`Произошла ошибка! + ${setData(err)}`))
+const getData = () => {
+    return fetch(`${api.url}/ingredients`, {
+        headers: api.headers,
+        method: 'GET',
+    })
+        .then(res => parseResponse(res))
+};
 
-export { http, parseResponse, getData }
+const setData = (productsIds) => {
+    return fetch(`${api.url}/orders`, {
+        headers: api.headers,
+        method: 'POST',
+        body: JSON.stringify({ ingredients: productsIds })
+    })
+        .then(res => parseResponse(res))
+};
+
+export { http, parseResponse, getData, setData }
