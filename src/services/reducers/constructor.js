@@ -1,56 +1,60 @@
-import update from 'immutability-helper';
 import { ADD_BUN, RESET_INGREDIENT, DELETE_INGREDIENT } from '../actions/constructor';
+import plug from '../../images/burg4.png'
 
-const initialConstructorState = {
-    element: [],
-    bun: null,
-    productsIds: [],
+const initialState = {
+  bun: {
+    image: plug,
+    image_large: plug,
+    image_mobile: plug,
+    name: "Перетащите булку",
+    price: 0,
+    type: "bun",
+    __v: 0,
+    _id: "none"
+  },
+  ingridients: []
 }
 
-export const burgerConstructorReducer = (state = initialConstructorState, action) => {
-    switch (action.type) {
-        case ADD_BUN:
-            //если только бл
-            if (action.item.type === 'bun') {
-                if (state.bun) {
-                    return {
-                        ...state,
-                        bun: action.item,
-                        productsIds: state.productsIds.filter(id => id !== state.bun._id)    //id
-                            .concat(action.item._id),
-                    };
-                } else {
-                    return {
-                        ...state,
-                        bun: action.item,
-                        productsIds: [...state.productsIds, action.item._id],                //id
-                    };
-                }
-            }
-            return {
-                ...state,
-                element: [...state.element, action.item],
-                productsIds: [...state.productsIds, action.item._id],                        //id
-            };
-        //Удаление ингредиента из выбранного списка
-        case DELETE_INGREDIENT:
-            return {
-                ...state,
-                element: [...state.element].filter(item => item.uId !== action.item.uId),
-                productsIds: [...state.productsIds].filter(id => id !== action.item._id),      //id
-            }
-        //Перетаскивание ингредиентов в конструктор
-        case RESET_INGREDIENT:
-            return {
-                ...state,
-                element: update(state.element, {
-                    $splice: [
-                        [action.dragIndex, 1],
-                        [action.hoverIndex, 0, state.element[action.dragIndex]],
-                    ]
-                })
-            }
-        default:
-            return state;
+export const constructorReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_BUN: {
+      if (action.ingridient.type === 'bun') {
+        return {
+          ...state,
+          bun: action.ingridient
+        }
+      } else {
+        const ingridient = {...action.ingridient};
+        ingridient.uniqid = action.uniqid;
+        ingridient.sort = state.ingridients.length + 1;
+        return {
+          ...state,
+          ingridients: [...state.ingridients, ingridient]
+        }
+      }
     }
+    case RESET_INGREDIENT: {
+      const ingridient = {...action.ingridient};
+      ingridient.uniqid = action.uniqid
+      let ingridients = [...state.ingridients];
+      ingridients.splice(action.sort, 0, ingridient);
+      ingridients = ingridients.filter((item) => item.uniqid !== action.ingridient.uniqid);
+      ingridients.map((ingridient, index) => ingridient.sort = index + 1);
+      return {
+        ...state,
+        ingridients: ingridients
+      }
+    }
+    case DELETE_INGREDIENT: {
+      const ingridients = [...state.ingridients.filter((item) => item.uniqid !== action.ingridient.uniqid)];
+      ingridients.map((ingridient, index) => ingridient.sort = index + 1)
+      return {
+        ...state,
+        ingridients: ingridients
+      }
+    }
+    default: {
+      return {...state}
+    }
+  }
 }

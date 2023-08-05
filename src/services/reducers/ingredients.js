@@ -1,47 +1,27 @@
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED, GET_CURRENT_TAB } from '../actions/ingredients';
+import { GET_INGRIDIENTS_REQUEST, GET_INGRIDIENTS_REQUEST_SUCCES, GET_INGRIDIENTS_REQUEST_FAIL} from '../actions/ingredients'
 
-// Исходное состояние
-const initialIngredients = {
-    ingredients: [],
-    currentTab: "bun",
-    ingredientsRequest: false,
-    ingredientsFailed: false,
+const initialState = {
+  ingridients: {
+    buns: [],
+    sauces: [],
+    main: []
+  },
+  isLoading: false,
+  hasError: false,
 };
 
-export const burgerIngredientsReducer = (state = initialIngredients, action) => {
-    switch (action.type) {
-        //Переключатель на таб
-        case GET_CURRENT_TAB: {
-            return {
-                ...state,
-                currentTab: action.currentTab,
-            };
-        }
-        //Запрос на получение ингредиентов
-        case GET_INGREDIENTS_REQUEST: {
-            return {
-                ...state,
-                ingredientsRequest: true,
-            };
-        }
-        //Успешный ответ на получение ингредиентов
-        case GET_INGREDIENTS_SUCCESS: {
-            return {
-                ...state,
-                ingredients: action.ingredients,
-                ingredientsRequest: false,
-                ingredientsFailed: false
-            };
-        }
-        //Ответ не пришел
-        case GET_INGREDIENTS_FAILED: {
-            return {
-                ...state,
-                ingredientsRequest: false,
-                ingredientsFailed: false,
-            };
-        }
-        default:
-            return state;
+export const ingredientsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_INGRIDIENTS_REQUEST: {
+      return {...state, isLoading: true};
+    };
+    case GET_INGRIDIENTS_REQUEST_SUCCES: {
+      return {...state, ingridients: action.ingridients, isLoading: false};
+    };
+    case GET_INGRIDIENTS_REQUEST_FAIL: {
+      return {...state, isLoading: false, hasError: true}
     }
-};
+    default:
+      return state
+  }
+}

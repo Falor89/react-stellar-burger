@@ -1,30 +1,32 @@
-import { getData } from "../../utils/api";
+import { getData } from '../../utils/api.js';
+import sort from '../../utils/sort.js';
 
-//Экшены для деталей ингредиентов
-export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
-export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
-export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
+export const GET_INGRIDIENTS_REQUEST = 'GET_INGRIDIENTS_REQUEST';
+export const GET_INGRIDIENTS_REQUEST_SUCCES = 'GET_INGRIDIENTS_REQUEST_SUCCES';
+export const GET_INGRIDIENTS_REQUEST_FAIL = 'GET_INGRIDIENTS_REQUEST_FAIL';
 
-//Экшен для переключения табов
-export const GET_CURRENT_TAB = "SET_CURRENT_TAB";
-
-export function getIngredients() {
-    return function (dispatch) {
+export function loadIngridients() {
+  return function(dispatch) {
+    dispatch({
+      type: GET_INGRIDIENTS_REQUEST
+    });
+    getData()
+      .then((ingridients) => sort(ingridients.data))
+      .then((list) => {
+        const [buns, sauces, main] = list;
         dispatch({
-            type: GET_INGREDIENTS_REQUEST,
-        });
-        getData()
-            .then((res) => {
-                dispatch({
-                    type: GET_INGREDIENTS_SUCCESS,
-                    ingredients: res.data,
-                });
-            })
-            .catch((err) => {
-                dispatch({
-                    type: GET_INGREDIENTS_FAILED,
-                })
-                console.log(err)
-            });
-    };
+          type: GET_INGRIDIENTS_REQUEST_SUCCES,
+          ingridients: {
+            buns: buns,
+            sauces: sauces,
+            main: main
+          }
+        })
+      })
+      .catch(() => {
+        dispatch({
+          type: GET_INGRIDIENTS_REQUEST_FAIL
+        })
+      })
+  }
 }

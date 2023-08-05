@@ -1,13 +1,12 @@
-import { combineReducers } from 'redux';
-import { burgerConstructorReducer } from './constructor';
-import { burgerIngredientsReducer } from './ingredients';
-import { orderReducer } from './order';
-import { detailsReducer } from './ingredient';
+import { combineReducers } from "redux";
+import { modalReducer } from './modal.js';
+import { constructorReducer } from './constructor.js';
+import { orderReducer } from './order.js';
+import { ingredientsReducer } from "./ingredients.js";
 
-// Корневой редьюсер, который обрабатывает экшены
 export const rootReducer = combineReducers({
-    burgerConstructor: burgerConstructorReducer,
-    burgerIngredients: burgerIngredientsReducer,
-    ingredient: detailsReducer,
-    order: orderReducer
-});
+  ingredients: ingredientsReducer,
+  constructorBurger: constructorReducer,
+  modal: modalReducer,
+  order: orderReducer
+})

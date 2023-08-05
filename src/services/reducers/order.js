@@ -1,54 +1,43 @@
-import {
-    GET_ORDER_REQUEST,
-    GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED,
-    OPEN_ORDER_MODAL,
-    CLOSE_ORDER_MODAL,
-} from '../actions/order';
-import { CLOSE_INGREDIENT, OPEN_INGREDIENT } from "../actions/ingredient";
+import { ORDER_ERROR, ORDER_REQUEST, ORDER_SUCCES} from '../actions/order.js';
 
-// Исходное состояние
-const initialOrderState = {
-    orderNumber: null,
-    orderRequest: false,
-    orderFailed: false,
-};
+const initialState = {
+  orderName: '',
+  orderNumber: 0,
+  hasError: false,
+  isLoading: false
+}
 
-export const orderReducer = (state = initialOrderState, action) => {
-    switch (action.type) {
-        //Запрос на получение деталей ингредиентов
-        case GET_ORDER_REQUEST: {
-            return {
-                ...state,
-                orderRequest: true,
-            };
-        }
-        //Успешный ответ на получение деталей ингредиентов
-        case GET_ORDER_SUCCESS: {
-            return {
-                ...state,
-                orderNumber: action.orderNumber,
-                orderRequest: false,
-                orderFailed: false,
-            };
-        }
-        //Ответ не пришел
-        case GET_ORDER_FAILED: {
-            return {
-                ...state,
-                orderRequest: false,
-                orderFailed: true,
-            };
-        }
-
-        case CLOSE_ORDER_MODAL: {
-            return {
-                ...state,
-                orderNumber: null,
-
-            };
-        }
-        default:
-            return state
+export const orderReducer = ( state = initialState, action) => {
+  switch(action.type) {
+    case ORDER_REQUEST: {
+      return {
+        ...state,
+        hasError: false,
+        isLoading: true
+      }
+  }
+  case ORDER_SUCCES: {
+    return {
+      ...state,
+      hasError: false,
+      isLoading: false,
+      orderName: action.orderName,
+      orderNumber: action.orderNumber
     }
-};
+  }
+  case ORDER_ERROR: {
+    return {
+      ...state,
+      isLoading: false,
+      hasError: true,
+      orderName: '',
+      orderNumber: 0,
+    }
+  }
+  default: {
+    return {
+      ...state
+    }
+  }
+}
+}

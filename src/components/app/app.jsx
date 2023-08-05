@@ -2,51 +2,44 @@ import styles from './app.module.css'
 import AppHeader from '../appHeader/AppHeader'
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { getData } from "../../utils/api";
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../services/actions/ingredients'
-import { closeModalIngredient } from "../../services/actions/ingredient";
-import { closeOrderModal } from "../../services/actions/order";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import { loadIngridients } from '../../services/actions/ingredients';
+import Modal from '../Modal/Modal';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 const App = () => {
-
-  const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burgerIngredients);
-  // const orderNumber = useSelector(store => store.order.orderNumber);
-
+  
   const dispatch = useDispatch();
-  React.useEffect(() => {
-    // Отправляем экшен при монтировании компонента
-    dispatch(getIngredients());
-  }, [dispatch]);
 
-  // //Стор для открытия модального окна
-  // const openDetailsModal = useSelector(store => store.ingredient.openDetailsModal);
+  const {isLoading, hasError, ingridients} = useSelector(store => store.ingredients);
+  const {actualModal, isModalOpen} = useSelector(store => store.modal);
 
-  // // Закрываем модальные окна
-  // const handleCloseOrder = useCallback(() => {
-  //   dispatch(closeOrderModal());
-  // }, [dispatch]);
-
-  // const handleDetailsModal = useCallback(() => {
-  //   dispatch(closeModalIngredient());
-  // }, [dispatch]);
-
+  useEffect(() => {
+    dispatch(loadIngridients())
+  },[dispatch])
 
   return (
     <div className={styles.container}>
       <AppHeader />
-      {!ingredientsFailed && !ingredientsRequest && (
-        <main className={styles.main}>
-          <DndProvider backend={HTML5Backend}>
-            {/* <BurgerIngredients /> */}
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      )}
+      <DndProvider backend={HTML5Backend}>
+          {!isLoading && !hasError && ingridients.buns.length !== 0 &&
+            <main className={styles.main}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </main>
+          }
+        </DndProvider>
+
+        {isModalOpen && 
+          <Modal>
+            {actualModal === 'ingridient' && <IngredientDetails />}
+            {actualModal === 'order' && <OrderDetails />}
+          </Modal>
+        }
     </div>
   );
 }

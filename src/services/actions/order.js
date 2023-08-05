@@ -1,34 +1,31 @@
-import { setData } from "../../utils/api";
+import { setData } from '../../utils/api.js';
+import { OPEN_ORDER_MODAL } from './modal.js';
 
-export const GET_ORDER_REQUEST = "GET_ORDER_REQUEST";
-export const GET_ORDER_SUCCESS = "GET_ORDER_SUCCESS";
-export const GET_ORDER_FAILED = "GET_ORDER_FAILED";
-export const CLOSE_ORDER_MODAL = "CLOSE_ORDER_MODAL";
+export const ORDER_ERROR = 'ORDER_HAS_ERROR';
+export const ORDER_REQUEST = 'ORDER_REQUEST';
+export const ORDER_SUCCES = 'ORDER_SUCCES';
 
-
-export function closeOrderModal() {
-    return {
-        type: CLOSE_ORDER_MODAL,
-    };
-}
-
-export function getOrder(order) {
-    return function (dispatch) {
+export function makeOrder(ingridientsID) {
+    return function(dispatch) {
+      dispatch({
+        type: ORDER_REQUEST
+      })
+      setData(ingridientsID)
+      .then((data) => {
         dispatch({
-            type: GET_ORDER_REQUEST
-        });
-        setData(order)
-            .then((res) => {
-                dispatch({
-                    type: GET_ORDER_SUCCESS,
-                    orderNumber: res.order.number,
-                });
-            })
-            .catch((err) => {
-                dispatch({
-                    type: GET_ORDER_FAILED,
-                })
-                console.log(err)
-            })
-    };
-}
+          type: ORDER_SUCCES,
+          orderNumber: data.order.number,
+          orderName: data.name
+        })
+        dispatch({
+          type: OPEN_ORDER_MODAL
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: ORDER_ERROR
+        })
+        console.log(`${err} Ошибка в получении заказа`)
+      })
+    }
+  }
