@@ -5,9 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
 import { makeOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
-import { ADD_BUN, addBun } from '../../services/actions/constructor';
-import { v4 as uuidv4 } from 'uuid';
-import uniqid from 'uniqid'
+import { addBun } from '../../services/actions/constructor';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -32,14 +30,11 @@ const BurgerConstructor = () => {
       setPrice(totalPrice);
     },[totalPrice])
   
-    const [{ isHover } , dropRef] = useDrop({
+    const [ , dropRef] = useDrop({
       accept: 'ingridient',
       drop(ingridient) {
         dispatch(addBun(ingridient))
       },
-      collect: (monitor) => ({
-        isHover: monitor.canDrop(),
-      })
     })
     
     return (

@@ -13,3 +13,11 @@ export function addBun(ingridient) {
         }
     }
 }
+
+export function resetItem (dragIndex, hoverIndex) {
+    return {
+        type: RESET_INGREDIENT,
+        dragIndex,
+        hoverIndex
+    };
+}

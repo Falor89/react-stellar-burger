@@ -18,53 +18,6 @@ const initialState = {
   productIds: [],
 }
 
-// export const constructorReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case ADD_BUN: {
-//       if (action.ingridient.type === 'bun') {
-//         return {
-//           ...state,
-//           bun: action.ingridient,
-//           productIds: state.productIds.filter(id => id !== state.bun._id).concat(action.ingridient._id)
-//         }
-//       } else {
-//         const ingridient = {...action.ingridient};
-//         ingridient.uniqid = action.uniqid;
-//         ingridient.sort = state.ingridients.length + 1;
-//         return {
-//           ...state,
-//           ingridients: [...state.ingridients, ingridient],
-//           productIds: [...state.productIds, action.ingridient._id]
-//         }
-//       }
-//     }
-//     case RESET_INGREDIENT: {
-//       const ingridient = {...action.ingridient};
-//       ingridient.uniqid = action.uniqid
-//       let ingridients = [...state.ingridients];
-//       ingridients.splice(action.sort, 0, ingridient);
-//       ingridients = ingridients.filter((item) => item.uniqid !== action.ingridient.uniqid);
-//       ingridients.map((ingridient, index) => ingridient.sort = index + 1);
-//       return {
-//         ...state,
-//         ingridients: ingridients
-//       }
-//     }
-//     case DELETE_INGREDIENT: {
-//       const ingridients = [...state.ingridients.filter((item) => item.uniqid !== action.ingridient.uniqid)];
-//       ingridients.map((ingridient, index) => ingridient.sort = index + 1)
-//       return {
-//         ...state,
-//         ingridients: ingridients,
-//         productIds: [...state.productIds].filter(id => id !== action.ingridient._id)
-//       }
-//     }
-//     default: {
-//       return state
-//     }
-//   }
-// }
-
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
       case ADD_BUN:
@@ -97,7 +50,7 @@ export const constructorReducer = (state = initialState, action) => {
               productIds: [...state.productIds].filter(id => id !== action.ingridient._id),      //id
           }
       //Перетаскивание ингредиентов в конструктор
-      case RESET_INGREDIENT:
+      case RESET_INGREDIENT: {
           return {
               ...state,
               ingridients: update(state.ingridients, {
@@ -106,7 +59,7 @@ export const constructorReducer = (state = initialState, action) => {
                       [action.hoverIndex, 0, state.ingridients[action.dragIndex]],
                   ]
               })
-          }
+          }}
       default:
           return state;
   }

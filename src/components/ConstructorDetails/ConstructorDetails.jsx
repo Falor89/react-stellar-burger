@@ -3,56 +3,71 @@ import styles from './constructorDetails.module.css'
 import { DragIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
-import uniqid from 'uniqid';
 import { RESET_INGREDIENT, DELETE_INGREDIENT } from "../../services/actions/constructor";
+import { resetItem } from "../../services/actions/constructor";
+import PropTypes from 'prop-types';
+import ingredientPropType from "../../utils/prop-types";
 
 
 
-const ConstructorDetails = ( {ingridient} ) => {
 
-    const dispatch = useDispatch();
-  
-    const [ ,dragRef] = useDrag({
-      type: 'replacingIngridient',
-      item: ingridient
-    })
-  
-    const ref = useRef(null);
-  
-    const [ ,dropRef] = useDrop({
+const ConstructorDetails = ( {ingridient, index} ) => {
+
+  const dispatch = useDispatch();
+
+  const id = ingridient.uId;
+
+  const ref = useRef(null);
+
+  const [{ handlerId }, drop] = useDrop({
       accept: 'replacingIngridient',
-      
-      drop(item, monitor) {
-        if (item.uniqid === ingridient.uniqid) {
-          return
-        }
-        const elementMiddle = (ref.current.getBoundingClientRect().bottom + ref.current.getBoundingClientRect().top) / 2
-        const itemOffset = monitor.getClientOffset().y;
-        
-        if (elementMiddle - itemOffset < 0) {
-          const id = uniqid()
-          dispatch({
-            type: RESET_INGREDIENT,
-            sort: ingridient.sort,
-            ingridient: item,
-            uniqid: id
-          })
-        }
-        if (elementMiddle - itemOffset > 0) {
-          const id = uniqid()
-          dispatch({
-            type: RESET_INGREDIENT,
-            sort: ingridient.sort - 1,
-            ingridient: item,
-            uniqid: id
-          })
-        }
-      }
-    })
-    dragRef(dropRef(ref))
+      collect(monitor) {
+          return {
+            handlerId: monitor.getHandlerId(), 
+          };
+      },
+      hover(ingridient, monitor) {
+          if (!ref.current) {
+              return;
+          }
+          const dragIndex = ingridient.index;
+          const hoverIndex = index;
+
+          if (dragIndex === hoverIndex) {
+              return;
+          }
+          const hoverBoundingRect = ref.current?.getBoundingClientRect();
+          const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+          const clientOffset = monitor.getClientOffset();
+          const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+          if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+              return;
+          }
+          if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+              return;
+          }
+          dispatch(resetItem(dragIndex, hoverIndex));
+          ingridient.index = hoverIndex;
+      },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: 'replacingIngridient',
+    item: () => {
+        return { id, index };
+    },
+    collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+    }),
+});
+
+const opacity = isDragging ? 0 : 1;
+
+drag(drop(ref));
 
     return (
-        <ul className={styles.list} ref={ref}>
+        <ul className={styles.list} ref={ref} style={{opacity}} data-handler-id={handlerId}>
         <li className={`${styles.listItem} mb-4`}>
             <span >
                 <DragIcon type="primary" />
@@ -70,5 +85,10 @@ const ConstructorDetails = ( {ingridient} ) => {
         </ul>
     );
 }
+
+ConstructorDetails.propTypes = {
+  ingridient: ingredientPropType.isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 export default ConstructorDetails;
