@@ -1,13 +1,13 @@
 import styles from './burgerConstructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect } from 'react';
+import React, { useEffect, } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
 import { makeOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
-import { ADD_BUN } from '../../services/actions/constructor';
-import uniqid from 'uniqid';
-
+import { ADD_BUN, addBun } from '../../services/actions/constructor';
+import { v4 as uuidv4 } from 'uuid';
+import uniqid from 'uniqid'
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -35,12 +35,7 @@ const BurgerConstructor = () => {
     const [ , dropRef] = useDrop({
       accept: 'ingridient',
       drop(ingridient) {
-        const id = uniqid()
-        dispatch({
-          type: ADD_BUN,
-          ingridient: ingridient,
-          uniqid: id
-        })
+        dispatch(addBun(ingridient))
       }
     })
     
@@ -59,7 +54,7 @@ const BurgerConstructor = () => {
           <ul className={styles.container__list}>
             {innerIngridients.length > 0 ?
             innerIngridients.map((ingridient, index) => (
-              <ConstructorDetails ingridient={ingridient} key={index} />
+              <ConstructorDetails ingridient={ingridient} key={ingridient.uId} index={index} />
             )) : <p className="text text_type_main-medium mr-10">Перетащите сюда ингридиенты</p>}
           </ul>
           <div className="mr-4">

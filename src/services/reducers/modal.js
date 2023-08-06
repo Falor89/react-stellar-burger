@@ -40,7 +40,7 @@ export const modalReducer = (state = initialState, action) => {
       } + console.log('Ошибка в получении запроса модалки')
     }
     default: {
-      return {...state}
+      return state
     }
   }
 }

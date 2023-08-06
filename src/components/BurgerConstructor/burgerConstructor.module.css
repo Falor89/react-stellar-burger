@@ -23,12 +23,12 @@
     overflow-y: auto;
 }
 
-.constructor__list::-webkit-scrollbar {
+.container::-webkit-scrollbar {
     width: 8px;
     background: #2F2F37;
 }
 
-.constructor__list::-webkit-scrollbar-thumb {
+.container::-webkit-scrollbar-thumb {
     background: #8585AD;
 }
 
