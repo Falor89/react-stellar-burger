@@ -32,11 +32,14 @@ const BurgerConstructor = () => {
       setPrice(totalPrice);
     },[totalPrice])
   
-    const [ , dropRef] = useDrop({
+    const [{ isHover } , dropRef] = useDrop({
       accept: 'ingridient',
       drop(ingridient) {
         dispatch(addBun(ingridient))
-      }
+      },
+      collect: (monitor) => ({
+        isHover: monitor.canDrop(),
+      })
     })
     
     return (

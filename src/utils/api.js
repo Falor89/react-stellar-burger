@@ -1,10 +1,3 @@
-const api = {
-    url: 'https://norma.nomoreparties.space/api/',
-    headers: {
-        'Content-Type': 'aplication.json'
-    }
-};
-
 export const url = 'https://norma.nomoreparties.space/api/';
 
 
@@ -22,17 +15,19 @@ const parseResponse = (res) => {
  * @param {object} body - Тело запроса
  * @returns Объект ответа */
 
-const http = (url, method = 'GET', body) => fetch(`${api.url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
+const http = (url, method = 'GET', body) => fetch(`${url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
 
 const getData = () => {
     return fetch(`${url}ingredients`, {
-        headers: api.headers,
-        method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET',
     })
         .then(res => parseResponse(res))
 };
 
-  function setData(ingridientsID) {
+function setData(ingridientsID) {
     return fetch(`${url}orders`, {
       method: 'POST',
       headers: {
