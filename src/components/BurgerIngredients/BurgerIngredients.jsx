@@ -1,50 +1,72 @@
-import React, { useState, useContext } from "react";
+import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import styles from './burgerIngredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientType from '../../utils/ingredientType'
 import TypesOfIngredients from '../TypesOfIngredients/TypesOfIngredients';
-import PropTypes from 'prop-types';
-import ingredientPropType from '../../utils/prop-types';
-import BurgerIngredientContext from "../../services/BurgerIngredientsContext";
-import { selectIngredients } from "../../utils/selectIngredients";
 
-const BurgerIngredients = () => {
 
-    const data = useContext(BurgerIngredientContext)
-
-    const bun = selectIngredients(ingredientType.bun.type, data)
-    const sauce = selectIngredients(ingredientType.sauce.type, data)
-    const main = selectIngredients(ingredientType.main.type, data)
-
-    const [current, setCurrent] = useState('bun')
-
+const BurgerIngridients = () => {
+    const [current, setCurrent] = React.useState('buns');
+    const {buns, sauces, main } = useSelector(store => store.ingredients.ingridients);
+  
+    const menu = useRef(null);
+    const menuBuns = useRef(null);
+    const menuSauces = useRef(null);
+    const menuMain = useRef(null);
+  
+    const onScroll = () => {
+      const saucesX = menuBuns.current.offsetHeight;
+      const mainX = menuSauces.current.offsetHeight + saucesX;
+      const menuScroll = menu.current.scrollTop;
+  
+      if (menuScroll >= mainX) {
+        setCurrent('main')
+      } else if (menuScroll >= saucesX) {
+        setCurrent('sauces')
+      } else {
+        setCurrent('buns')
+      }
+    }
+  
+    const scrollTo = (value) => {
+      setCurrent(value)
+      let section
+      switch (value) {
+        case 'buns':
+          section = menuBuns.current;
+          break;
+        case 'sauces':
+          section = menuSauces.current;
+          break;
+        case 'main':
+          section = menuMain.current;
+          break;
+      }
+      const scrolloption = { behavior: 'smooth'}
+      section.scrollIntoView(scrolloption)
+    }
+  
     return (
-        <section className={styles.section}>
-            <h1 className='text text_type_main-large pt-10'>Соберите бургер</h1>
-            <div className={styles.tab}>
-                    <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
-                        Булки
-                    </Tab>
-                    <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
-                        Соусы
-                    </Tab>
-                    <Tab value="main" active={current === 'main'} onClick={setCurrent}>
-                        Начинки
-                    </Tab>
-            </div>
-            <div className={styles.container}>
-                <a name='bun'>
-                    <TypesOfIngredients ingridientType={bun} type={ingredientType.bun} />
-                </a>
-                <a name='sauce'>
-                    <TypesOfIngredients ingridientType={sauce} type={ingredientType.sauce} />
-                </a>
-                <a name='main'>
-                    <TypesOfIngredients ingridientType={main} type={ingredientType.main} />
-                </a>
-            </div>
-        </section>
+      <section className={styles.section}>
+        <h2 className={`text text_type_main-large ${styles.title}`}>Соберите бургер</h2>
+        <div className={styles.tab}>
+        <Tab value="buns" active={current === 'buns'} onClick={scrollTo}>
+          Булки
+        </Tab>
+        <Tab value="sauces" active={current === 'sauces'} onClick={scrollTo}>
+          Соусы
+        </Tab>
+        <Tab value="main" active={current === 'main'} onClick={scrollTo}>
+          Начинки
+        </Tab>
+      </div>
+      <div className={styles.container} ref={menu} onScroll={onScroll}>
+        <TypesOfIngredients name = "Булки" menu = {buns} ref={menuBuns} />
+        <TypesOfIngredients name = "Соусы" menu = {sauces} ref={menuSauces} />
+        <TypesOfIngredients name = "Начинки" menu = {main} ref={menuMain} />
+      </div>
+      </section>
     )
-}
-
-export default BurgerIngredients;
+  }
+  
+  export default BurgerIngridients;

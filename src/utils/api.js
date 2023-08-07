@@ -1,9 +1,5 @@
-const api = {
-    url: 'https://norma.nomoreparties.space/api',
-    headers: {
-        'Content-Type': 'aplication.json'
-    }
-};
+export const url = 'https://norma.nomoreparties.space/api/';
+
 
 const parseResponse = (res) => {
     if (res.ok) {
@@ -19,10 +15,27 @@ const parseResponse = (res) => {
  * @param {object} body - Тело запроса
  * @returns Объект ответа */
 
-const http = (url, method = 'GET', body) => fetch(`${api.url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
+const http = (url, method = 'GET', body) => fetch(`${url}/${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
 
-const getData = (data, setData) => http('ingredients')
-.then(({ data }) => setData(data))
-.catch((err) => alert(`Произошла ошибка! + ${setData(err)}`))
+const getData = () => {
+    return fetch(`${url}ingredients`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET',
+    })
+        .then(res => parseResponse(res))
+};
 
-export { http, parseResponse, getData }
+function setData(ingridientsID) {
+    return fetch(`${url}orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ingridientsID)
+    })
+        .then(res => parseResponse(res))
+  }
+
+export { http, parseResponse, getData, setData }
