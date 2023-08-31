@@ -3,48 +3,40 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { CLOSE_MODAL } from '../../services/actions/modal.js';
 
 
 const modalContainer = document.querySelector('#modal');
 
 const Modal = (props) => {
 
-  const dispatch = useDispatch();
-
-  const onClose = () => {
-    dispatch({
-      type: CLOSE_MODAL
-    })
-  }
+  const close = props.close
 
   useEffect(() => {
     document.addEventListener('keydown', escClose)
 
-    return(() => {
-    document.removeEventListener('keydown', escClose)
+    return (() => {
+      document.removeEventListener('keydown', escClose)
     })
-  },[])
+  }, [])
 
   const escClose = (e) => {
     if (e.key === 'Escape') {
-        onClose()
+      close()
     }
   }
 
-    return createPortal(
-        <>
-            <div className={styles.container}>
-                <button type="button" className={styles.closeButton}>
-                    <CloseIcon type='primary' onClick={onClose} />
-                </button>
-                {props.children}
-            </div>
-            <ModalOverlay onClick={onClose} />
-        </>,
-        modalContainer
-    )
+  return createPortal(
+    <>
+      <div className={styles.container}>
+        <button type="button" className={styles.closeButton} onClick={close}>
+          <CloseIcon type='primary' />
+        </button>
+        {props.children}
+      </div>
+      <ModalOverlay close={close} />
+    </>,
+    modalContainer
+  )
 }
 
 

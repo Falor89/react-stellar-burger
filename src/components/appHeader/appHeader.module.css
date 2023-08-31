@@ -1,55 +1,67 @@
 .header {
-    width: 100vw;
-    background-color: #1c1c21;
     margin: 0;
-    padding: 0;
+    padding: 16px 0;
+    background-color: #1C1C21;
+    width: 100%;
 }
 
-.nav {
+.navigation {
     margin: 0 auto;
-    max-width: 1280px;
+    padding: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
+    max-width: 1280px;
 }
 
 .menu {
+    flex: 1;
     margin: 0;
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex: 1;
+    flex-direction: row;
+    gap: 50px;
 }
 
-.item {
-    list-style-type: none;
+.menuItem {
+    margin: 0;
+    padding: 0;
 }
 
-.link {
-    text-decoration: none;
+.menuLink {
+    margin: 0;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    color: #8585AD;
     gap: 8px;
-    cursor: pointer;
-    transition: opacity .4s ease;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
 }
 
-.link:active {
-    color: #F2F2F3;
+.menuLink:hover {
+    filter: drop-shadow(0 0 10px #5427f8);
+}
+
+.logoLink {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.logoLink:hover {
+    filter: drop-shadow(0 0 10px #5427f8);
+}
+
+.profile {
+    composes: menuItem;
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .icon {
     width: 24px;
     height: 24px;
-}
-
-.link:hover {
-    opacity: .7;
-}
-
-.profile {
-    composes: item;
 }

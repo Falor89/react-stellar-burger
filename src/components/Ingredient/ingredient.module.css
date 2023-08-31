@@ -17,6 +17,13 @@
     text-align: center;
 }
 
-.image{
+.image {
     margin: 0 4px;
+}
+
+.link {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: inherit;
 }
