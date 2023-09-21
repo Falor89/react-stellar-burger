@@ -1,5 +1,6 @@
 import { getCookie } from "./cookie";
 
+
 export const url = 'https://norma.nomoreparties.space/api/';
 
 
@@ -9,6 +10,51 @@ const parseResponse = (res, message = '') => {
     message: message
   })
 }
+
+const checkReponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+
+const fetchWithRefresh = async (authToken, path) => {
+  const config = {
+    method: "POST",
+    headers: {
+      'Content-Type': "application/json",
+      Authorization: authToken
+    },
+  }
+  try {
+    const res = await fetch(`${url}${path}`, config);
+    return await checkReponse(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const refreshData = await refreshToken();
+      if (!refreshData.success) {
+        return Promise.reject(refreshData);
+      }
+      localStorage.setItem("accessToken", refreshData.accessToken);
+      config.headers.Authorization = refreshData.accessToken;
+      const res = await fetch(`${url}${path}`, config);
+      return await checkReponse(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+};
+
+const refreshToken = (path) => {
+  return fetch(`${url}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("refreshToken"),
+    }),
+  }).then(checkReponse);
+};
+
 
 /** @function
  * @name http - Обработка http запросов
@@ -109,4 +155,4 @@ function setUserRequest(authToken, bodyInner) {
 }
 
 
-export { http, parseResponse, getData, setData, sendPost, passResetRequest, resetPassword, loginRequest, getUser, logoutRequest, refreshRequest, setUserRequest, register }
+export { http, parseResponse, getData, setData, sendPost, passResetRequest, resetPassword, loginRequest, getUser, logoutRequest, refreshRequest, setUserRequest, register, fetchWithRefresh, checkReponse }

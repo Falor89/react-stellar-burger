@@ -1,4 +1,4 @@
-import { loginRequest, register, getUser, refreshRequest, logoutRequest, setUserRequest } from "../../utils/api";
+import { loginRequest, register, getUser, refreshRequest, logoutRequest, setUserRequest, fetchWithRefresh } from "../../utils/api";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookie";
 
 export const LOGIN_IN = 'LOGIN_IN';
@@ -11,6 +11,7 @@ export const OPEN_RESET_PAGE = 'OPEN_RESET_PAGE';
 export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 export const LOGOUT = 'LOGOUT';
+
 
 const dispatchUserToken = (data, dispatch) => {
     if (data.success) {
@@ -97,7 +98,7 @@ export function getUserInfo(accessToken = '') {
 export function refreshToken() {
     const token = getCookie('tokenToRefresh');
     return function (dispatch) {
-        refreshRequest(token)
+        fetchWithRefresh(token, 'auth/token')
             .then((data) => {
                 if (data.success) {
                     dispatch({
@@ -109,7 +110,18 @@ export function refreshToken() {
                 }
             })
             .catch((err) => {
-                dispatch(signOut())
+                if (err.message === "jwt expired") {
+                    dispatch({
+                        type: UPDATE_TOKEN,
+                        token: err.accessToken
+                    })
+                    setCookie('tokenToRefresh', err.refreshToken, { path: '/' });
+                    updateUser(err.accessToken, dispatch)
+                }
+                else {
+                    dispatch(signOut())
+                    console.log(err)
+                }
             })
     }
 }

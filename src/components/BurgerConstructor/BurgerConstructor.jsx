@@ -18,6 +18,8 @@ const BurgerConstructor = () => {
     authorized ?
       dispatch(makeOrder(IDs)) :
       history.replace({ pathname: '/login' });
+
+    console.log()
   }
   const authorized = useSelector(store => store.user.authorization);
   const bun = useSelector(store => store.constructorBurger.bun);
