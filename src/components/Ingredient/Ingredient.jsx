@@ -1,45 +1,21 @@
-import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './ingredient.module.css'
-import { useMemo } from "react";
-import { useDrag } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
-import { OPEN_INGRIDIENT_MODAL } from '../../services/actions/modal.js';
+import React from 'react';
+import styles from './ingredient.module.css';
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
-
-const Ingredient = ({ingridient}) => {
-    const dispatch = useDispatch();
-  
-    const getIngredients = useSelector(store => store.constructorBurger);
-    
-    const setCount = useMemo(() => {
-      const ingredientsList = [getIngredients.bun, ...getIngredients.ingridients];
-      const selectIngredients = ingredientsList.filter((current) => current._id === ingridient._id);
-      return selectIngredients.length
-    },[getIngredients])
-  
-    const openIngredient = (ingridient) => {
-      dispatch({
-        type: OPEN_INGRIDIENT_MODAL,
-        ingridient: ingridient
-      })
-    }
-  
-    const [ ,dragref] = useDrag({
-      type: 'ingridient',
-      item: ingridient
-    })  
-  
+const Ingredient = ({ ingredient }) => {
     return (
-      <li className={styles.container} onClick={() => openIngredient(ingridient)} ref={dragref}>
-        <img className={styles.image} src={ingridient.image} alt={ingridient.name} />
-        <div className={styles.price}>
-          <span className="text text_type_digits-default">{ingridient.price}</span>
-          <CurrencyIcon type="primary" />
+        <div className={styles.container}>
+            <img src={ingredient.image} alt={ingredient.name} />
+            <div>
+                <CurrencyIcon type='primary' />
+                <span className="text text_type_digits-default">{ingredient.price}</span>
+            </div>
+            <p className={`text text_type_main-default ${styles.text}`}>{ingredient.name}</p>
+            <Counter count={1} size='default' />
         </div>
-        <p className={`text text_type_main-default ${styles.text}`}>{ingridient.name}</p>
-        {setCount > 0 && <Counter count={setCount} size="default"/>}
-      </li>
     )
-  }
+}
 
-export default Ingredient;
+
+
+export default Ingredient

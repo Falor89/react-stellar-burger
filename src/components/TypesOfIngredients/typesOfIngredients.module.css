@@ -1,12 +1,15 @@
+.ingredientContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0;
+    max-height: 756px;
+}
+
 .ingredients {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     row-gap: 32px;
     justify-content: space-between;
-}
-
-.container {
-    list-style-type: none;
-    padding-bottom: 40px;
 }

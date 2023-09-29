@@ -2,7 +2,12 @@
     width: 600px;
 }
 
-.tab{
+.title {
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+.tab {
     display: flex;
 }
 
@@ -26,9 +31,4 @@
 
 .container::-webkit-scrollbar-thumb {
     background: #8585AD;
-}
-
-.title {
-    padding: 0;
-    margin: 40px 0 20px 0;
 }

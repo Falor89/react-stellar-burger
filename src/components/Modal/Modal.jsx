@@ -1,51 +1,44 @@
-import styles from './modal.module.css'
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { createPortal } from "react-dom";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { CLOSE_MODAL } from '../../services/actions/modal.js';
-
+import React from 'react';
+import styles from './modal.module.css';
+import { createPortal } from 'react-dom';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
 
 const modalContainer = document.querySelector('#modal');
 
 const Modal = (props) => {
+    const close = props.close;
 
-  const dispatch = useDispatch();
-
-  const onClose = () => {
-    dispatch({
-      type: CLOSE_MODAL
-    })
-  }
-
-  useEffect(() => {
-    document.addEventListener('keydown', escClose)
-
-    return(() => {
-    document.removeEventListener('keydown', escClose)
-    })
-  },[])
-
-  const escClose = (e) => {
-    if (e.key === 'Escape') {
-        onClose()
+    const escClose = (e) => {
+        if (e.key === 'Escape') {
+            close()
+        }
     }
-  }
+
+    React.useEffect(
+        () => {
+            document.addEventListener('keydown', escClose)
+
+            return (
+                () => {
+                    document.removeEventListener('keydown', escClose)
+                }
+            )
+        }, []
+    )
 
     return createPortal(
         <>
             <div className={styles.container}>
-                <button type="button" className={styles.closeButton}>
-                    <CloseIcon type='primary' onClick={onClose} />
+                <button className={styles.closeButton} type='button' onClick={close} >
+                    <CloseIcon type='primary' />
                 </button>
                 {props.children}
             </div>
-            <ModalOverlay onClick={onClose} />
+            <ModalOverlay close={close} />
         </>,
         modalContainer
     )
 }
-
 
 export default Modal;

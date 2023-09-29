@@ -5,18 +5,8 @@
     align-items: center;
     row-gap: 4px;
     max-width: 272px;
-    cursor: pointer;
-}
-
-.price {
-    display: flex;
-    gap: 8px;
 }
 
 .text {
     text-align: center;
-}
-
-.image{
-    margin: 0 4px;
 }

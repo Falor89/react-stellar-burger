@@ -1,13 +1,11 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #131316;
-  color: #f2f2f3;
+.root {
+    display: flex;
+    flex-direction: column;
+    color: #f2f2f3;
 }
 
-.main{
-  display: flex; 
-  margin: 0 auto;
-  gap: 40px; 
+.main {
+    display: flex;
+    margin: 0 auto;
+    gap: 40px
 }
