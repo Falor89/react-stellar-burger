@@ -13,18 +13,36 @@ const parseResponse = (res) => {
     return Promise.reject(new Error(`Ошибка со статус-кодом ${res.status}`))
 }
 
-const getData = (data, setData) => {
-    fetch(`${api.url}ingredients`)
-        .then(parseResponse)
-        .then((res) => {
-            setData(res.data)
-        })
-        .catch((err) => {
-            setData(err);
-            console.log(err);
-            alert(err)
-        })
+const letData = () => {
+    return fetch(`${api.url}ingredients`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'GET',
+    })
+        .then(res => parseResponse(res))
+};
+
+const getData = () => {
+    return fetch(`${api.url}ingredients`, {
+        method: 'GET',
+        headers: api.headers
+    })
+        .then(res => parseResponse(res))
 }
 
+const setData = (ingredientID) => {
+    fetch(`${api.url}orders`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/json;charset=utf-8"
+        },
+        body: JSON.stringify(ingredientID)
+    })
+        .then(parseResponse)
+}
 
-export { api, parseResponse, getData }
+const http = (url, method = 'GET', body) => fetch(`${api.url}${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
+
+
+export { api, parseResponse, getData, setData, http }

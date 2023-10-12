@@ -1,16 +1,21 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './burgerIngredients.module.css';
 import selectType from '../../utils/utils';
 import ingredientsType from '../../utils/ingredientsType';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import TypeOfIngredients from '../TypesOfIngredients/TypesOfIngredients'
+import { BurgerIngredientContext } from '../../services/burgerIngredientContext';
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = () => {
+    const dispatch = useDispatch();
+
+    const { buns, sauces, main } = useSelector(store => store.ingredients.ingredients)
+
+
+
     const [current, setCurrent] = React.useState('bun')
 
-    const bun = selectType(ingredientsType.bun.type, data)
-    const sauce = selectType(ingredientsType.sauce.type, data)
-    const main = selectType(ingredientsType.main.type, data)
 
     const menu = React.useRef(null);
     const menuBuns = React.useRef(null);
@@ -25,9 +30,9 @@ const BurgerIngredients = ({ data }) => {
         if (menuScroll >= mainX) {
             setCurrent('main')
         } else if (menuScroll >= saucesX) {
-            setCurrent('sauce')
+            setCurrent('sauces')
         } else {
-            setCurrent('bun')
+            setCurrent('buns')
         }
     }
 
@@ -35,10 +40,10 @@ const BurgerIngredients = ({ data }) => {
         setCurrent(value)
         let section
         switch (value) {
-            case 'bun':
+            case 'buns':
                 section = menuBuns.current;
                 break;
-            case 'sauce':
+            case 'sauces':
                 section = menuSauces.current;
                 break;
             case 'main':
@@ -54,14 +59,14 @@ const BurgerIngredients = ({ data }) => {
         <section className={styles.section}>
             <h1 className={`text text_type_main-large ${styles.title}`}>Соберите бургер</h1>
             <div className={styles.tab}>
-                <Tab value="bun" active={current === 'bun'} onClick={scrollTo}>Булки</Tab>
-                <Tab value="sauce" active={current === 'sauce'} onClick={scrollTo}>Соусы</Tab>
+                <Tab value="buns" active={current === 'buns'} onClick={scrollTo}>Булки</Tab>
+                <Tab value="sauces" active={current === 'sauces'} onClick={scrollTo}>Соусы</Tab>
                 <Tab value="main" active={current === 'main'} onClick={scrollTo}>Начинки</Tab>
             </div>
             <div className={styles.container} ref={menu} onScroll={onScroll}>
-                <TypeOfIngredients ingredientType={bun} type={ingredientsType.bun} ref={menuBuns} />
-                <TypeOfIngredients ingredientType={sauce} type={ingredientsType.sauce} ref={menuSauces} />
-                <TypeOfIngredients ingredientType={main} type={ingredientsType.main} ref={menuMain} />
+                <TypeOfIngredients name='Булки' menu={buns} ref={menuBuns} />
+                <TypeOfIngredients name='Соусы' menu={sauces} ref={menuSauces} />
+                <TypeOfIngredients name='Начинки' menu={main} ref={menuMain} />
             </div>
         </section>
     )
