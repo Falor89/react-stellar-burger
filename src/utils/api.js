@@ -32,15 +32,14 @@ const getData = () => {
 }
 
 const setData = (ingredientID) => {
-    fetch(`${api.url}orders`, {
+    return fetch(`${api.url}orders`, {
         method: 'POST',
-        headers: {
-            'Content-Type': "application/json;charset=utf-8"
-        },
+        headers: api.headers,
         body: JSON.stringify(ingredientID)
     })
-        .then(parseResponse)
+        .then(res => parseResponse(res))
 }
+
 
 const http = (url, method = 'GET', body) => fetch(`${api.url}${url}`, { method, headers: { 'Content-Type': "application/json;charset=utf-8" }, body }).then((res) => { if (res.ok) return res.json() })
 

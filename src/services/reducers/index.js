@@ -7,7 +7,7 @@ import { constructorReducer } from "./constructor";
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
-    constructor: constructorReducer,
+    constructorBurger: constructorReducer,
     modal: modalReducer,
     order: orderReducer
 })

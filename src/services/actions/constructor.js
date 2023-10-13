@@ -4,11 +4,11 @@ export const ADD_BUN = 'ADD_BUN'
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT'
 export const RESET_INGREDIENT = 'RESET_INGREDIENT'
 
-export function addBun(ingridient) {
+export function addBun(ingredient) {
     return {
         type: ADD_BUN,
-        ingridient: {
-            ...ingridient,
+        ingredient: {
+            ...ingredient,
             uId: uuidv4(),
         }
     }

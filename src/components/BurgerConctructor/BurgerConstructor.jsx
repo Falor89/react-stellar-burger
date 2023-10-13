@@ -8,6 +8,7 @@ import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
 import { setData, http } from '../../utils/api';
 import { useDrop } from 'react-dnd';
 import { addBun } from '../../services/actions/constructor';
+import { makeOrder } from '../../services/actions/order';
 
 
 const BurgerConstructor = () => {
@@ -16,16 +17,13 @@ const BurgerConstructor = () => {
 
     const { actualModal, isModalOpen } = useSelector(store => store.modal)
 
+    const bun = useSelector(store => store.constructorBurger.bun)
+    const innerIngredients = useSelector(store => store.constructorBurger.ingredients)
+    const ingredientsID = innerIngredients.length > 0 ? [bun._id, ...innerIngredients.map((ingredient) => { return ingredient._id }), bun._id] : 0;
 
     const orderClick = (IDs) => {
-        dispatch(setData(IDs))
+        dispatch(makeOrder(IDs))
     }
-
-
-    const bun = useSelector(store => store.constructor.bun)
-    const innerIngredients = useSelector(store => store.constructor.ingredients)
-
-    // const ingredientsID = innerIngredients.length > 0 ? [bun._id, ...innerIngredients.map((ingredient) => { return ingredient._id }), bun._id] : 0;
 
     const [, dropRef] = useDrop({
         accept: 'ingridient',
@@ -38,46 +36,44 @@ const BurgerConstructor = () => {
     return (
         <section className={styles.section}>
             <div className={styles.section} ref={dropRef}>
-                {console.log(bun)}
-                {console.log(innerIngredients)}
-                {/* <ConstructorElement
+                <ConstructorElement
                     type="top"
                     isLocked={true}
                     text={`${bun.name} (верх)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                /> */}
+                />
             </div>
             <div className={styles.container}>
-                {/* <ul className={styles.list}>
+                <ul className={styles.list}>
                     {innerIngredients.length > 0 ?
                         innerIngredients.map((ingredient, index) => (
                             <ConstructorDetails ingredient={ingredient} key={ingredient.uId} index={index} />
                         )) : <p className="text text_type_main-medium mr-10">Перетащите сюда ингридиенты</p>}
-                </ul> */}
+                </ul>
             </div>
             <div>
-                {/* <ConstructorElement
+                <ConstructorElement
                     type="bottom"
                     isLocked={true}
                     text={`${bun.name} (низ)`}
                     price={bun.price}
                     thumbnail={bun.image}
-                /> */}
+                />
             </div>
             <div className={styles.price}>
                 <p className='text text_type_digits-medium'>
                     <CurrencyIcon type="primary" />
                 </p>
-                {/* <Button htmlType="button" type="primary" size="large" onClick={() => orderClick({ "ingredients": ingredientsID })}>
+                <Button htmlType="button" type="primary" size="large" onClick={() => orderClick({ "ingredients": ingredientsID })}>
                     Оформить заказ
-                </Button> */}
+                </Button>
             </div>
-            {isModalOpen &&
+            {/* {isModalOpen &&
                 <Modal>
                     {actualModal === 'ingredient' && <OrderDetails />}
                 </Modal>
-            }
+            } */}
         </section>
     )
 }
