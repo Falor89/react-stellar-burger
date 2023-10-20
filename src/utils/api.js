@@ -1,4 +1,4 @@
-import { getCookie } from "./cookie";
+import { getCookie, setCookie } from "./cookie";
 
 
 export const url = 'https://norma.nomoreparties.space/api/';
@@ -10,51 +10,6 @@ const parseResponse = (res, message = '') => {
     message: message
   })
 }
-
-const checkReponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
-
-const fetchWithRefresh = async (authToken, path) => {
-  const config = {
-    method: "POST",
-    headers: {
-      'Content-Type': "application/json",
-      Authorization: authToken
-    },
-  }
-  try {
-    const res = await fetch(`${url}${path}`, config);
-    return await checkReponse(res);
-  } catch (err) {
-    if (err.message === "jwt expired") {
-      const refreshData = await refreshToken();
-      if (!refreshData.success) {
-        return Promise.reject(refreshData);
-      }
-      localStorage.setItem("accessToken", refreshData.accessToken);
-      config.headers.Authorization = refreshData.accessToken;
-      const res = await fetch(`${url}${path}`, config);
-      return await checkReponse(res);
-    } else {
-      return Promise.reject(err);
-    }
-  }
-};
-
-const refreshToken = (path) => {
-  return fetch(`${url}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-    },
-    body: JSON.stringify({
-      token: localStorage.getItem("refreshToken"),
-    }),
-  }).then(checkReponse);
-};
-
 
 /** @function
  * @name http - Обработка http запросов
@@ -75,18 +30,17 @@ const getData = () => {
     .then(parseResponse)
 };
 
-function setData(ingridientsID) {
+function setData(ingridientsID, token) {
   return fetch(`${url}orders`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      authorization: token
     },
     body: JSON.stringify(ingridientsID)
   })
     .then(res => parseResponse(res))
 }
-
-
 function sendPost(secondaryURL, bodyInner) {
   return fetch(url + secondaryURL, {
     method: 'POST',
@@ -135,7 +89,13 @@ function getUser(authToken) {
 }
 
 function refreshRequest(token) {
-  return sendPost('auth/token', { token: token })
+  return fetchWithRefresh('auth/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token: token })
+  })
 }
 
 function logoutRequest(token) {
@@ -154,5 +114,116 @@ function setUserRequest(authToken, bodyInner) {
     .then(parseResponse)
 }
 
+const fetchWithRefresh = async (secondaryURL, options) => {
+  try {
+    const res = await fetch(url + secondaryURL, options)
+    return await parseResponse(res)
+  } catch (err) {
+    if (err.message === 'jwt expired') {
+      const refreshData = await refreshToken();
 
-export { http, parseResponse, getData, setData, sendPost, passResetRequest, resetPassword, loginRequest, getUser, logoutRequest, refreshRequest, setUserRequest, register, fetchWithRefresh, checkReponse }
+      options.headers.Authorization = refreshData.accessToken
+      setCookie('token', refreshData.refreshToken)
+      setCookie('tokenToRefresh', refreshData.refreshToken)
+
+      const res = await fetch(url + secondaryURL, options)
+      return await parseResponse(res)
+    } else {
+      return Promise.reject(err);
+    }
+  }
+}
+
+export const refreshToken = () => {
+  return fetch(`${url}auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      token: setCookie('tokenToRefresh'),
+    }),
+  }).then(parseResponse);
+};
+
+
+
+export { http, parseResponse, getData, setData, sendPost, passResetRequest, resetPassword, loginRequest, getUser, logoutRequest, refreshRequest, setUserRequest, register }
+
+
+// const fetchWithRefresh = async (url, options) => {
+//   try {
+//     const res = await fetch(url, options);
+//     return await checkResponse(res);
+//   } catch (err) {
+//     if (err.message === "jwt expired") {
+//       const refreshData = await refreshToken();
+//       localStorage.setItem("refreshToken", refreshData.refreshToken);
+//       setCookie("token", refreshData.accessToken);
+//       options.headers.authorization = refreshData.accessToken;
+//       const res = await fetch(url, options);
+//       return await checkResponse(res);
+//     } else {
+//       return Promise.reject(err);
+//     }
+//   }
+// }
+
+// const refreshToken = () => {
+//   return fetch(`${url}auth/token`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json; charset=utf-8",
+//     },
+//     body: JSON.stringify({
+//       token: localStorage.getItem("refreshToken"),
+//     }),
+//   }).then(parseResponse);
+// };
+
+// const loginRequest = (email, password) => {
+//   return fetch(`${url}auth/login`, {
+//     method: 'POST',
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       'email': email,
+//       'password': password,
+//     })
+//   })
+//     .then(parseResponse)
+// }
+
+// const register = (email, password, username) => {
+//   return fetch(`${url}auth/register`, {
+//     method: 'POST',
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       'email': email,
+//       'password': password,
+//       'username': username
+//     })
+//   })
+// }
+
+// const logoutRequest = (token) => {
+//   return fetch(`${url}auth/logout`, {
+//     method: 'POST',
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ token: token })
+//   })
+// }
+
+// const getUserRequest = async () => {
+//   return fetchWithRefresh(`${url}auth/user`, {
+//     method: 'GET',
+//     headers: {
+//       "Content-Type": "application/json",
+//     }
+//   })
+// }

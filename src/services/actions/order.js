@@ -6,11 +6,11 @@ export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_SUCCES = 'ORDER_SUCCES';
 
 export function makeOrder(ingridientsID) {
-    return function(dispatch) {
-      dispatch({
-        type: ORDER_REQUEST
-      })
-      setData(ingridientsID)
+  return function (dispatch) {
+    dispatch({
+      type: ORDER_REQUEST
+    })
+    setData(ingridientsID)
       .then((data) => {
         dispatch({
           type: ORDER_SUCCES,
@@ -25,7 +25,7 @@ export function makeOrder(ingridientsID) {
         dispatch({
           type: ORDER_ERROR
         })
-        console.log(`${err} Ошибка в получении заказа`)
+        console.log(`${err.message} Ошибка в получении заказа`)
       })
-    }
   }
+}

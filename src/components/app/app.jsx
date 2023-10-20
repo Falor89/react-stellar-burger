@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithRefresh } from '../../utils/api';
+import { getUser, refreshRequest } from '../../utils/api';
+import { getCookie } from '../../utils/cookie';
+import { getUserInfo } from '../../services/actions/user';
 
 import { HomePage } from '../../pages/home/home';
 import { LoginPage } from '../../pages/login/login';
@@ -13,7 +16,7 @@ import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password'
 
 
 import styles from './app.module.css'
-import AppHeader from '../appHeader/AppHeader'
+import AppHeader from '../AppHeader/AppHeader'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 import { CHANGE_PAGE, refreshToken } from '../../services/actions/user';
@@ -24,7 +27,7 @@ import ProtectedRoute from '../Protected/ProtectedRoute';
 
 const App = () => {
   const dispatch = useDispatch();
-  const { authorization } = useSelector(store => store.user);
+  const { authorization, accessToken } = useSelector(store => store.user);
   const location = useLocation();
 
   const background = location.state?.background;
@@ -37,12 +40,14 @@ const App = () => {
   }, [path])
 
   useEffect(() => {
-    dispatch(refreshToken());
     dispatch(loadIngridients());
+    dispatch(refreshToken())
+
   }, [])
 
   return (
     <div className={styles.app}>
+      {console.log(document.cookie)}
       <AppHeader />
       <Switch>
         <Route path="/" exact={true}>

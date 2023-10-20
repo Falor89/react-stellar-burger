@@ -1,4 +1,4 @@
-import { loginRequest, register, getUser, refreshRequest, logoutRequest, setUserRequest, fetchWithRefresh } from "../../utils/api";
+import { loginRequest, register, getUser, refreshRequest, logoutRequest, setUserRequest } from "../../utils/api";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookie";
 
 export const LOGIN_IN = 'LOGIN_IN';
@@ -11,7 +11,6 @@ export const OPEN_RESET_PAGE = 'OPEN_RESET_PAGE';
 export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_TOKEN = 'UPDATE_TOKEN';
 export const LOGOUT = 'LOGOUT';
-
 
 const dispatchUserToken = (data, dispatch) => {
     if (data.success) {
@@ -26,13 +25,14 @@ const dispatchUserToken = (data, dispatch) => {
 function updateUser(accessToken, dispatch) {
     return getUser(accessToken)
         .then((data) => {
-            if (data.success) {
+            if (data && data.success) {
                 dispatch({
                     type: UPDATE_USER,
                     user: data.user
                 })
             }
         })
+
 }
 
 function signOut() {
@@ -86,11 +86,8 @@ export function getUserInfo(accessToken = '') {
     return function (dispatch) {
         updateUser(accessToken, dispatch)
             .catch((err) => {
-                if (err.message === 'getUser' && getCookie('tokenToRefresh') !== '') {
-                    dispatch(refreshToken());
-                } else {
-                    dispatch(signOut())
-                }
+                alert(`Ошибка гет ${err}`)
+                dispatch(signOut())
             })
     }
 }
@@ -98,30 +95,18 @@ export function getUserInfo(accessToken = '') {
 export function refreshToken() {
     const token = getCookie('tokenToRefresh');
     return function (dispatch) {
-        fetchWithRefresh(token, 'auth/token')
+        refreshRequest(token)
             .then((data) => {
                 if (data.success) {
                     dispatch({
                         type: UPDATE_TOKEN,
                         token: data.accessToken
                     })
-                    setCookie('tokenToRefresh', data.refreshToken, { path: '/' });
                     updateUser(data.accessToken, dispatch)
                 }
             })
             .catch((err) => {
-                if (err.message === "jwt expired") {
-                    dispatch({
-                        type: UPDATE_TOKEN,
-                        token: err.accessToken
-                    })
-                    setCookie('tokenToRefresh', err.refreshToken, { path: '/' });
-                    updateUser(err.accessToken, dispatch)
-                }
-                else {
-                    dispatch(signOut())
-                    console.log(err)
-                }
+                dispatch(signOut())
             })
     }
 }
@@ -149,12 +134,9 @@ export function patchUser(token = '', bodyInner) {
                     })
                 }
             })
-            .catch(() => {
-                if (getCookie('tokenToRefresh') !== '') {
-                    dispatch(refreshToken());
-                } else {
-                    dispatch(signOut())
-                }
+            .catch((err) => {
+                alert(`Ошибка патч ${err}`)
+                dispatch(signOut())
             })
     }
 }
