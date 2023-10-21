@@ -1,47 +1,84 @@
-import styles from './app.module.css'
-import AppHeader from '../appHeader/AppHeader'
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { loadIngridients } from '../../services/actions/ingredients';
-import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails';
+import { fetchWithRefresh } from '../../utils/api';
+import { getUser, refreshRequest } from '../../utils/api';
+import { getCookie } from '../../utils/cookie';
+import { getUserInfo } from '../../services/actions/user';
+
+import { HomePage } from '../../pages/home/home';
+import { LoginPage } from '../../pages/login/login';
+import { RegisterPage } from '../../pages/register/register';
+import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { ProfilePage } from '../../pages/profile/profile';
+import { IngredientPageModal } from '../../pages/ingredient/ingredient';
+import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+
+
+import styles from './app.module.css'
+import AppHeader from '../AppHeader/AppHeader'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-const App = () => {
-  
-  const dispatch = useDispatch();
+import { CHANGE_PAGE, refreshToken } from '../../services/actions/user';
+import { loadIngridients } from '../../services/actions/ingredients';
 
-  const {isLoading, hasError, ingridients} = useSelector(store => store.ingredients);
-  const {actualModal, isModalOpen} = useSelector(store => store.modal);
+import ProtectedRoute from '../Protected/ProtectedRoute';
+
+
+const App = () => {
+  const dispatch = useDispatch();
+  const { authorization, accessToken } = useSelector(store => store.user);
+  const location = useLocation();
+
+  const background = location.state?.background;
+  const path = location.pathname;
 
   useEffect(() => {
-    dispatch(loadIngridients())
-  },[dispatch])
+    if (path !== '/login') {
+      dispatch({ type: CHANGE_PAGE })
+    }
+  }, [path])
+
+  useEffect(() => {
+    dispatch(loadIngridients());
+    dispatch(refreshToken())
+
+  }, [])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.app}>
+      {console.log(document.cookie)}
       <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-          {!isLoading && !hasError && ingridients.buns.length !== 0 &&
-            <main className={styles.main}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </main>
-          }
-        </DndProvider>
-
-        {isModalOpen && 
-          <Modal>
-            {actualModal === 'ingridient' && <IngredientDetails />}
-            {actualModal === 'order' && <OrderDetails />}
-          </Modal>
-        }
+      <Switch>
+        <Route path="/" exact={true}>
+          <HomePage />
+        </Route>
+        <Route path='/ingredients/:id' exact={true}>
+          {background ?
+            <IngredientPageModal /> :
+            <IngredientDetails />}
+        </Route>
+        <Route path="/login" exact={true}>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact={true}>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPasswordPage />
+        </Route>
+        <ProtectedRoute requires={authorization} path="/profile" exact={true}>
+          <ProfilePage />
+        </ProtectedRoute>
+        <Route>
+          <h1>Ooooops</h1>
+        </Route>
+      </Switch>
     </div>
-  );
+  )
 }
 
 export default App;

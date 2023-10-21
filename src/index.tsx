@@ -9,6 +9,8 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers/index';
 import { configureStore } from '@reduxjs/toolkit'
 import { legacy_createStore as createStore } from 'redux'
+import { BrowserRouter as Router } from 'react-router-dom';
+
 // import { createStore } from 'redux';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -21,10 +23,14 @@ const store = createStore(rootReducer, enhancer);
 
 
 ReactDOM.render(
-  // Оборачиваем приложение компонентом Provider из пакета react-redux
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </React.StrictMode>,
+
   document.getElementById('root')
 );
 

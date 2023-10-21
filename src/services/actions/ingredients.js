@@ -6,7 +6,7 @@ export const GET_INGRIDIENTS_REQUEST_SUCCES = 'GET_INGRIDIENTS_REQUEST_SUCCES';
 export const GET_INGRIDIENTS_REQUEST_FAIL = 'GET_INGRIDIENTS_REQUEST_FAIL';
 
 export function loadIngridients() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_INGRIDIENTS_REQUEST
     });
