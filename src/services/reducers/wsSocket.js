@@ -16,7 +16,7 @@ const initialState = {
 export const webSocketReducer = (state = initialState, action) => {
     switch (action.type) {
         case WS_SOCKET_OPEN:
-            return { ...state, privat: false }
+            return { ...state, privat: false, }
         case WS_SOCKET_OPEN_PRIVAT:
             return { ...state, privat: true, }
         case WS_OPEN_SUCCESS:

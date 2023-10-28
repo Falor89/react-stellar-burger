@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWithRefresh } from '../../utils/api';
 import { getUser, refreshRequest } from '../../utils/api';
@@ -13,25 +13,36 @@ import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilePage } from '../../pages/profile/profile';
 import { IngredientPageModal } from '../../pages/ingredient/ingredient';
 import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import { FeedPage } from '../../pages/feed-page/feed-page';
 
 
 import styles from './app.module.css'
 import AppHeader from '../AppHeader/AppHeader'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import Modal from '../Modal/Modal';
+import OrderInfoCommon from '../OrderInfo/OrderInfoCommon';
+import OrderInfoPrivat from '../OrderInfo/OrderInfoPrivat';
 
 import { CHANGE_PAGE, refreshToken } from '../../services/actions/user';
 import { loadIngridients } from '../../services/actions/ingredients';
 
 import ProtectedRoute from '../Protected/ProtectedRoute';
+import ProfileFeed from '../ProfileFeed/ProfileFeed';
 
 
 const App = () => {
   const dispatch = useDispatch();
-  const { authorization, accessToken } = useSelector(store => store.user);
+  const { authorization } = useSelector(store => store.user);
   const location = useLocation();
+  const history = useHistory();
+  const isPrivat = useSelector(store => store.socket)
 
   const background = location.state?.background;
   const path = location.pathname;
+
+  const closeModal = () => {
+    history.goBack();
+  }
 
   useEffect(() => {
     if (path !== '/login') {
@@ -40,23 +51,19 @@ const App = () => {
   }, [path])
 
   useEffect(() => {
+    dispatch(refreshToken());
     dispatch(loadIngridients());
-    dispatch(refreshToken())
-
   }, [])
 
   return (
     <div className={styles.app}>
-      {console.log(document.cookie)}
       <AppHeader />
-      <Switch>
+      <Switch location={background || location}>
         <Route path="/" exact={true}>
           <HomePage />
         </Route>
         <Route path='/ingredients/:id' exact={true}>
-          {background ?
-            <IngredientPageModal /> :
-            <IngredientDetails />}
+          <IngredientDetails />
         </Route>
         <Route path="/login" exact={true}>
           <LoginPage />
@@ -70,13 +77,41 @@ const App = () => {
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
-        <ProtectedRoute requires={authorization} path="/profile" exact={true}>
+        <ProtectedRoute requires={authorization} path="/profile/orders/:id" exact={true}>
+          <OrderInfoPrivat />
+        </ProtectedRoute>
+        <ProtectedRoute requires={authorization} path="/profile">
           <ProfilePage />
         </ProtectedRoute>
+        <Route path="/feed" exact={true}>
+          <FeedPage />
+        </Route>
+        <Route path="/feed/:id" exact={true}>
+          <OrderInfoCommon />
+        </Route>
         <Route>
-          <h1>Ooooops</h1>
+          <h1 className={styles.nf}>404 Page not found</h1>
         </Route>
       </Switch>
+      {background &&
+        <Switch>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal close={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <Modal close={closeModal}>
+              <OrderInfoCommon background={background} />
+            </Modal>
+          </Route>
+          <Route path="/profile/orders/:id" exact={true}>
+            <Modal close={closeModal}>
+              <OrderInfoPrivat background={background} />
+            </Modal>
+          </Route>
+        </Switch>
+      }
     </div>
   )
 }

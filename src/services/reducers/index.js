@@ -4,6 +4,7 @@ import { constructorReducer } from './constructor.js';
 import { orderReducer } from './order.js';
 import { ingredientsReducer } from "./ingredients.js";
 import { userReducer } from "./user.js";
+import { webSocketReducer } from "./wsSocket.js";
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   modal: modalReducer,
   order: orderReducer,
   user: userReducer,
+  socket: webSocketReducer,
 })

@@ -1,4 +1,4 @@
-import { OPEN_ORDER_MODAL, OPEN_INGRIDIENT_MODAL, CLOSE_MODAL, ORDER_HAS_ERROR} from '../actions/modal.js';
+import { OPEN_ORDER_MODAL, OPEN_INGRIDIENT_MODAL, CLOSE_MODAL, ORDER_HAS_ERROR } from '../actions/modal.js';
 
 const initialState = {
   isModalOpen: false,
@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export const modalReducer = (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case OPEN_ORDER_MODAL: {
       return {
         ...state,
@@ -32,12 +32,12 @@ export const modalReducer = (state = initialState, action) => {
       }
     }
     case ORDER_HAS_ERROR: {
-      return { 
+      return {
         ...state,
         isModalOpen: false,
         actualModal: '',
         actualIngridient: {},
-      } + console.log('Ошибка в получении запроса модалки')
+      } + console.log(`Ошибка в получении запроса модалки`)
     }
     default: {
       return state

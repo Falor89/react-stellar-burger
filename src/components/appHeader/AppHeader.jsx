@@ -47,7 +47,7 @@ const AppHeader = () => {
                         </Link>
                     </li>
                     <li className={styles.menuItem}>
-                        <Link className={`text text_type_main-default text_color_inactive ${styles.menuLink}`} to="/">
+                        <Link className={`text text_type_main-default text_color_inactive ${styles.menuLink}`} to="/feed">
                             <ListIcon type={activeTab.feed ? 'primary' : 'secondary'} className={styles.icon} />
                             <span className={`text text_type_main-default ${activeTab.feed ? '' : 'text_color_inactive'}`}>Лента заказов</span>
                         </Link>

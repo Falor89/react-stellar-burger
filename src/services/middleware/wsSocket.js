@@ -7,7 +7,7 @@ export const socketMiddleware = (wsActions, wsUrl, wsPrivateUrl) => {
             const { type, payload } = action;
             const { open, close, onOpen, onClose, error, onMessage, openPrivate, onMessagePrivate } = wsActions;
             const { accessToken } = getState().user;
-            const isPrivate = getState().socket.private;
+            const isPrivat = getState().socket.privat;
             const token = accessToken.split(' ')[1];
 
 
@@ -32,7 +32,7 @@ export const socketMiddleware = (wsActions, wsUrl, wsPrivateUrl) => {
                     const { data } = e;
                     const parsed = JSON.parse(data);
                     if (parsed.success) {
-                        isPrivate ?
+                        isPrivat ?
                             dispatch({
                                 type: onMessagePrivate,
                                 orders: parsed.orders

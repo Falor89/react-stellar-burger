@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProfileForm from "../../forms/profile";
 import ProfileMenu from "../../components/Menu/ProfileMenu";
+import ProfileFeed from "../../components/ProfileFeed/ProfileFeed";
 
 import styles from "./profile.module.css";
 import { getUserInfo } from "../../services/actions/user";
-import { useLocation } from "react-router-dom";
+import { Route, useLocation, Switch } from "react-router-dom";
 
 export const ProfilePage = () => {
     const location = useLocation().pathname
@@ -20,7 +21,17 @@ export const ProfilePage = () => {
     return (
         <div className={styles.root}>
             <ProfileMenu />
-            <ProfileForm />
+            <Switch>
+                <Route exact={true} path="/profile">
+                    <ProfileForm />
+                </Route>
+                <Route exact={true} path="/profile/orders">
+                    <ProfileFeed />
+                </Route>
+                <Route>
+                    <h2>Такого маршрута не существует</h2>
+                </Route>
+            </Switch>
         </div>
     )
 }

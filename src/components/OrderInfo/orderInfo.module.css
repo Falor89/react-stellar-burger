@@ -1,0 +1,40 @@
+.section {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 5px 0;
+}
+
+.number {
+    align-self: center;
+}
+
+.title {
+    padding: 40px 0px 12px 0;
+}
+
+.status {
+    padding-bottom: 60px;
+}
+
+.container {
+    margin-top: 20px;
+    overflow: scroll;
+    height: 312px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.containerPirce {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 40px;
+}
+
+.price {
+    display: flex;
+    padding-bottom: 20px;
+}

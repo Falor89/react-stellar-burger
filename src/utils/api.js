@@ -23,7 +23,7 @@ const http = (url, method = 'GET', body) => fetch(`${url}/${url}`, { method, hea
 const getData = () => {
   return fetch(`${url}ingredients`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     method: 'GET',
   })
@@ -35,11 +35,12 @@ function setData(ingridientsID, token) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      authorization: token
+      Authorization: token
     },
     body: JSON.stringify(ingridientsID)
   })
     .then(res => parseResponse(res))
+    .catch(err => console.log(`${err} ошибка`))
 }
 function sendPost(secondaryURL, bodyInner) {
   return fetch(url + secondaryURL, {
