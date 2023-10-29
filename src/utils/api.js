@@ -40,7 +40,6 @@ function setData(ingridientsID, token) {
     body: JSON.stringify(ingridientsID)
   })
     .then(res => parseResponse(res))
-    .catch(err => console.log(`${err} ошибка`))
 }
 function sendPost(secondaryURL, bodyInner) {
   return fetch(url + secondaryURL, {
