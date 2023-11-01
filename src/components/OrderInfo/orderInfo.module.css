@@ -1,8 +1,10 @@
 .section {
-    width: 600px;
+    margin: 24px auto 0;
+    padding: 0;
+    width: 640px;
     display: flex;
     flex-direction: column;
-    padding: 20px 5px 0;
+    align-items: center;
 }
 
 .number {
@@ -15,6 +17,13 @@
 
 .status {
     padding-bottom: 60px;
+    width: 100%;
+    text-align: left;
+}
+
+.compound {
+    width: 100%;
+    text-align: left;
 }
 
 .container {
@@ -37,4 +46,13 @@
 .price {
     display: flex;
     padding-bottom: 20px;
+}
+
+.footer {
+    width: 100%;
+    padding: 0;
+    margin: 40px auto 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

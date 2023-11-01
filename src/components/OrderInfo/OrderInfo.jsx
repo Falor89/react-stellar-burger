@@ -60,10 +60,10 @@ const OrderInfo = ({ isPrivat }) => {
 
     return (
         <section className={styles.section}>
-            <p className={`${styles.number} text text_type_digits-default`}>{`#${order.number}`}</p>
+            <p className={`${styles.number} text text_type_digits-medium`}>{`#${order.number}`}</p>
             <p className={`${styles.title} text text_type_main-medium`}>{order.name}</p>
             <p className={`${styles.status} text text_type_main-small`} style={{ color: checkStatus(order.status) === 'Выполнено' ? 'red' : '#00CCCC' }}>{checkStatus(order.status)}</p>
-            <p className={`text text_type_main-medium`}>Состав:</p>
+            <p className={`${styles.compound} text text_type_main-medium`}>Состав:</p>
             <div className={`${styles.container} custom-scroll`}>
                 {ingredientsSortedList.map(ingredient => {
                     const selected = ingredientsList.filter((current) => current._id === ingredient._id)
@@ -71,14 +71,12 @@ const OrderInfo = ({ isPrivat }) => {
                     return <OrderIngredient key={ingredient._id} ingredient={ingredient} counter={counter} />
                 })}
             </div>
-            <div className={`${styles.containerPirce}`}>
-                <p className={`text text_type_main-default text_color_inactive`}>
-                    <FormattedDate date={new Date(order.updatedAt)} />
-                </p>
-                <div className={`${styles.price}`}>
-                    <p className={`text text_type_digits-default`}>{sum}</p>
-                    <CurrencyIcon type='primary' />
-                </div>
+            <div className={styles.footer}>
+                <span className="text text_type_main-default text_color_inactive"><FormattedDate date={new Date(order.updatedAt)} /></span>
+                <span className="text text_type_digits-medium">
+                    {sum} &nbsp;
+                    <CurrencyIcon type="primary" />
+                </span>
             </div>
         </section >
     )
