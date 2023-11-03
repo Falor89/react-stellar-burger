@@ -13,12 +13,12 @@ import { addBun } from '../../services/actions/constructor';
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const accessToken = useSelector(store => store.user.accessToken)
 
-  const orderClick = (IDs) => {
+  const orderClick = (IDs, token) => {
     authorized ?
-      dispatch(makeOrder(IDs)) :
+      dispatch(makeOrder(IDs, token)) :
       history.replace({ pathname: '/login' });
-
   }
   const authorized = useSelector(store => store.user.authorization);
   const bun = useSelector(store => store.constructorBurger.bun);
@@ -79,7 +79,7 @@ const BurgerConstructor = () => {
           <CurrencyIcon type="primary" />
         </div>
         {bun._id !== 'none' && innerIngridients.length !== 0 &&
-          <Button htmlType='button' type="primary" size="large" onClick={() => { orderClick({ "ingredients": ingridientsID }) }}>
+          <Button htmlType='button' type="primary" size="large" onClick={() => { orderClick({ "ingredients": ingridientsID }, accessToken) }}>
             Оформить заказ
           </Button>
         }

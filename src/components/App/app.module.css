@@ -6,8 +6,12 @@
   color: #f2f2f3;
 }
 
-.main{
-  display: flex; 
+.main {
+  display: flex;
   margin: 0 auto;
-  gap: 40px; 
+  gap: 40px;
+}
+
+.nf {
+  text-align: center;
 }

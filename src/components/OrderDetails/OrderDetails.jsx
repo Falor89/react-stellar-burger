@@ -1,11 +1,25 @@
 import styles from './orderDetails.module.css'
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import loading from '../../images/loading.gif'
 
 
 const OrderDetails = () => {
 
-    const { orderNumber, hasError } = useSelector(store => store.order)
+    const { orderNumber, hasError, isLoading } = useSelector(store => store.order)
+
+    if (isLoading) {
+        return (
+            <>
+                <div className={`${styles.container} pt-30 pb-30`}>
+                    <p className={`text text_type_main-medium mt-4 ${styles.text}`}>Пожалуйста, подождите</p>
+                    <p className={`text text_type_main-medium mt-2 ${styles.text}`}>Ваш заказ обрабатывается</p>
+                    <img className={styles.loading} src={loading} alt='Loading...' />
+                    <p className={`text text_type_main-small mb-8 ${styles.text}`}>Это займет 15-20 сеукнд</p>
+                </div>
+            </>
+        )
+    }
 
     return (
         <>

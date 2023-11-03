@@ -3,22 +3,22 @@ import { OPEN_ORDER_MODAL } from './modal.js';
 
 export const ORDER_ERROR = 'ORDER_HAS_ERROR';
 export const ORDER_REQUEST = 'ORDER_REQUEST';
-export const ORDER_SUCCES = 'ORDER_SUCCES';
+export const ORDER_SUCCESS = 'ORDER_SUCCES';
 
-export function makeOrder(ingridientsID) {
+export function makeOrder(ingridientsID, token) {
   return function (dispatch) {
     dispatch({
       type: ORDER_REQUEST
     })
-    setData(ingridientsID)
+    dispatch({
+      type: OPEN_ORDER_MODAL
+    })
+    setData(ingridientsID, token)
       .then((data) => {
         dispatch({
-          type: ORDER_SUCCES,
+          type: ORDER_SUCCESS,
           orderNumber: data.order.number,
           orderName: data.name
-        })
-        dispatch({
-          type: OPEN_ORDER_MODAL
         })
       })
       .catch((err) => {
