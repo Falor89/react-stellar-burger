@@ -6,11 +6,13 @@
     row-gap: 4px;
     max-width: 272px;
     cursor: pointer;
+    margin: 24px 0 32px 16px;
 }
 
 .price {
     display: flex;
     gap: 8px;
+    justify-content: center;
 }
 
 .text {
