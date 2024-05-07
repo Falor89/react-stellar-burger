@@ -59,7 +59,7 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <Switch location={background || location}>
-        <Route path="/react-stellar-burger" exact={true}>
+        <Route path="/react-stellar-burger/" exact={true}>
           <HomePage />
         </Route>
         <Route path='/react-stellar-burger/ingredients/:id' exact={true}>
