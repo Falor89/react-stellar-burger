@@ -4,6 +4,7 @@ import styles from './feedOrders.module.css'
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { routes } from "../../utils/path";
 
 
 
@@ -43,7 +44,7 @@ const FeedOrders = ({ order, ingredientsData }) => {
 
     return (
         <Link to={{
-            pathname: isPrivat ? `/react-stellar-burger/profile/orders/${order._id}` : `/feed/${order._id}`,
+            pathname: isPrivat ? `${routes.orderHistory}/${order._id}` : `${routes.order}/${order._id}`,
             state: { background: location }
         }} className={`${styles.link}`}>
             <div className={`${styles.order}`} style={{ width: isPrivat ? '830px' : '600px' }}>

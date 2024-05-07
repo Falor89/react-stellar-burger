@@ -30,7 +30,7 @@ const Ingredient = ({ ingridient }) => {
 
   return (
     <li className={styles.container} ref={dragref}>
-      <Link className={styles.link} to={{ pathname: `/react-stellar-burger/ingredients/${ingridient._id}`, state: { background: location } }} >
+      <Link className={styles.link} to={{ pathname: `${routes.ingredients}/${ingridient._id}`, state: { background: location } }} >
         <img className={styles.image} src={ingridient.image} alt={ingridient.name} />
         <div className={styles.price}>
           <span className="text text_type_digits-default">{ingridient.price}</span>
