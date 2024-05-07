@@ -28,6 +28,7 @@ import { loadIngridients } from '../../services/actions/ingredients';
 
 import ProtectedRoute from '../Protected/ProtectedRoute';
 import ProfileFeed from '../ProfileFeed/ProfileFeed';
+import { routes } from '../../utils/path';
 
 
 const App = () => {
@@ -59,34 +60,34 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <Switch location={background || location}>
-        <Route path="/react-stellar-burger/" exact={true}>
+        <Route path={routes.main} exact={true}>
           <HomePage />
         </Route>
-        <Route path='/react-stellar-burger/ingredients/:id' exact={true}>
+        <Route path={routes.ingredient} exact={true}>
           <IngredientDetails />
         </Route>
-        <Route path="/react-stellar-burger/login" exact={true}>
+        <Route path={routes.login} exact={true}>
           <LoginPage />
         </Route>
-        <Route path="/react-stellar-burger/register" exact={true}>
+        <Route path={routes.register} exact={true}>
           <RegisterPage />
         </Route>
-        <Route path="/react-stellar-burger/forgot-password" exact={true}>
+        <Route path={routes.forgotPassword} exact={true}>
           <ForgotPasswordPage />
         </Route>
-        <Route path="/react-stellar-burger/reset-password" exact={true}>
+        <Route path={routes.resetPassword} exact={true}>
           <ResetPasswordPage />
         </Route>
-        <ProtectedRoute requires={authorization} path="/react-stellar-burger/profile/orders/:id" exact={true}>
+        <ProtectedRoute requires={authorization} path={routes.userOrder} exact={true}>
           <OrderInfoPrivat />
         </ProtectedRoute>
-        <ProtectedRoute requires={authorization} path="/react-stellar-burger/profile">
+        <ProtectedRoute requires={authorization} path={routes.profile}>
           <ProfilePage />
         </ProtectedRoute>
-        <Route path="/react-stellar-burger/feed" exact={true}>
+        <Route path={routes.feed} exact={true}>
           <FeedPage />
         </Route>
-        <Route path="/react-stellar-burger/feed/:id" exact={true}>
+        <Route path={routes.order} exact={true}>
           <OrderInfoCommon />
         </Route>
         <Route>
@@ -95,17 +96,17 @@ const App = () => {
       </Switch>
       {background &&
         <Switch>
-          <Route path="/react-stellar-burger/ingredients/:id" exact={true}>
+          <Route path={routes.ingredient} exact={true}>
             <Modal close={closeModal}>
               <IngredientDetails />
             </Modal>
           </Route>
-          <Route path="/react-stellar-burger/feed/:id" exact={true}>
+          <Route path={routes.order} exact={true}>
             <Modal close={closeModal}>
               <OrderInfoCommon background={background} />
             </Modal>
           </Route>
-          <Route path="/react-stellar-burger/profile/orders/:id" exact={true}>
+          <Route path={routes.userOrder} exact={true}>
             <Modal close={closeModal}>
               <OrderInfoPrivat background={background} />
             </Modal>
