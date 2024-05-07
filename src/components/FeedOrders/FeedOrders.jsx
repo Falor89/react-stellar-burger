@@ -44,7 +44,7 @@ const FeedOrders = ({ order, ingredientsData }) => {
 
     return (
         <Link to={{
-            pathname: isPrivat ? `${routes.orderHistory}/${order._id}` : `${routes.order}/${order._id}`,
+            pathname: isPrivat ? `${routes.orderHistory}/${order._id}` : `${routes.orders}/${order._id}`,
             state: { background: location }
         }} className={`${styles.link}`}>
             <div className={`${styles.order}`} style={{ width: isPrivat ? '830px' : '600px' }}>

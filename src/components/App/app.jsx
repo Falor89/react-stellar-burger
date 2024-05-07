@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWithRefresh } from '../../utils/api';
-import { getUser, refreshRequest } from '../../utils/api';
-import { getCookie } from '../../utils/cookie';
-import { getUserInfo } from '../../services/actions/user';
 
 import { HomePage } from '../../pages/home/home';
 import { LoginPage } from '../../pages/login/login';
 import { RegisterPage } from '../../pages/register/register';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilePage } from '../../pages/profile/profile';
-import { IngredientPageModal } from '../../pages/ingredient/ingredient';
 import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
 import { FeedPage } from '../../pages/feed-page/feed-page';
 
@@ -27,7 +22,6 @@ import { CHANGE_PAGE, refreshToken } from '../../services/actions/user';
 import { loadIngridients } from '../../services/actions/ingredients';
 
 import ProtectedRoute from '../Protected/ProtectedRoute';
-import ProfileFeed from '../ProfileFeed/ProfileFeed';
 import { routes } from '../../utils/path';
 
 
@@ -46,7 +40,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (path !== '/login') {
+    if (path !== routes.login) {
       dispatch({ type: CHANGE_PAGE })
     }
   }, [path])

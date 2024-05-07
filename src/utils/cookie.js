@@ -8,7 +8,7 @@ function getCookie(name) {
 function setCookie(name, value, options = {}) {
 
     options = {
-        path: '/',
+        path: '/react-stellar-burger/',
         // при необходимости добавьте другие значения по умолчанию
         ...options
     };
