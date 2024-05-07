@@ -7,6 +7,7 @@ import { logout } from "../../services/actions/user";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from './profileMenu.module.css';
+import { routes } from "../../utils/path";
 
 const ProfileMenu = () => {
     const dispatch = useDispatch();
@@ -19,13 +20,13 @@ const ProfileMenu = () => {
 
     useEffect(() => {
         switch (location.pathname) {
-            case "/profile":
+            case routes.profile:
                 setActiveTab({
                     profile: true,
                     orders: false
                 })
                 break;
-            case "/profile/orders":
+            case routes.orders:
                 setActiveTab({
                     profile: false,
                     orders: true,
@@ -47,8 +48,8 @@ const ProfileMenu = () => {
     return (
         <div className={styles.container}>
             <nav className={styles.container}>
-                <Link className={`${styles.link} text text_type_main-medium ${activeTab.profile ? '' : styles.linkInactive}`} to="/profile">Профиль</Link>
-                <Link className={`${styles.link} text text_type_main-medium ${activeTab.orders ? '' : styles.linkInactive} `} to="/profile/orders">История заказов</Link>
+                <Link className={`${styles.link} text text_type_main-medium ${activeTab.profile ? '' : styles.linkInactive}`} to={routes.profile}>Профиль</Link>
+                <Link className={`${styles.link} text text_type_main-medium ${activeTab.orders ? '' : styles.linkInactive} `} to={routes.orders}>История заказов</Link>
                 <Button htmlType='button' onClick={onClick} className={`${styles.link} text text_type_main-medium ${styles.linkInactive}`}>Выход</Button>
             </nav>
             <p className="text text_type_main-default text_color_inactive mt-20">В этом разделе вы можете изменить свои персональные данные</p>

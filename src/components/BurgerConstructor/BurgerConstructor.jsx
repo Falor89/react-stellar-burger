@@ -9,6 +9,7 @@ import ConstructorDetails from '../ConstructorDetails/ConstructorDetails';
 import { makeOrder } from "../../services/actions/order";
 import { useDrop } from 'react-dnd';
 import { addBun } from '../../services/actions/constructor';
+import { routes } from '../../utils/path';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const BurgerConstructor = () => {
   const orderClick = (IDs, token) => {
     authorized ?
       dispatch(makeOrder(IDs, token)) :
-      history.replace({ pathname: '/login' });
+      history.replace({ pathname: routes.login });
   }
   const authorized = useSelector(store => store.user.authorization);
   const bun = useSelector(store => store.constructorBurger.bun);

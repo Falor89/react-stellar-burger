@@ -4,19 +4,20 @@ import { useSelector } from "react-redux";
 
 import ResetPasswordForm from "../../forms/reset-password";
 import styles from './reset-password.module.css';
+import { routes } from "../../utils/path";
 
 export const ResetPasswordPage = () => {
     const { authorization, passReset } = useSelector(store => store.user);
 
     if (authorization) {
         return (
-            <Redirect to='/' />
+            <Redirect to={routes.main} />
         )
     }
 
     if (!passReset) {
         return (
-            <Redirect to='/forgot-password' />
+            <Redirect to={routes.forgotPassword} />
         )
     }
 
@@ -26,7 +27,7 @@ export const ResetPasswordPage = () => {
             <div className={styles.links}>
                 <span className="text text_type_main-default text_color_inactive">
                     Вспомнили пароль?
-                    <Link className={styles.link} to="/login">
+                    <Link className={styles.link} to={routes.login} >
                         <span className="ml-2">Войти</span>
                     </Link>
                 </span>
