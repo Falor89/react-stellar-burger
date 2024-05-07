@@ -59,34 +59,34 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
       <Switch location={background || location}>
-        <Route path="/" exact={true}>
+        <Route path="/react-stellar-burger" exact={true}>
           <HomePage />
         </Route>
-        <Route path='/ingredients/:id' exact={true}>
+        <Route path='/react-stellar-burger/ingredients/:id' exact={true}>
           <IngredientDetails />
         </Route>
-        <Route path="/login" exact={true}>
+        <Route path="/react-stellar-burger/login" exact={true}>
           <LoginPage />
         </Route>
-        <Route path="/register" exact={true}>
+        <Route path="/react-stellar-burger/register" exact={true}>
           <RegisterPage />
         </Route>
-        <Route path="/forgot-password" exact={true}>
+        <Route path="/react-stellar-burger/forgot-password" exact={true}>
           <ForgotPasswordPage />
         </Route>
-        <Route path="/reset-password" exact={true}>
+        <Route path="/react-stellar-burger/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
-        <ProtectedRoute requires={authorization} path="/profile/orders/:id" exact={true}>
+        <ProtectedRoute requires={authorization} path="/react-stellar-burger/profile/orders/:id" exact={true}>
           <OrderInfoPrivat />
         </ProtectedRoute>
-        <ProtectedRoute requires={authorization} path="/profile">
+        <ProtectedRoute requires={authorization} path="/react-stellar-burger/profile">
           <ProfilePage />
         </ProtectedRoute>
-        <Route path="/feed" exact={true}>
+        <Route path="/react-stellar-burger/feed" exact={true}>
           <FeedPage />
         </Route>
-        <Route path="/feed/:id" exact={true}>
+        <Route path="/react-stellar-burger/feed/:id" exact={true}>
           <OrderInfoCommon />
         </Route>
         <Route>
@@ -95,17 +95,17 @@ const App = () => {
       </Switch>
       {background &&
         <Switch>
-          <Route path="/ingredients/:id" exact={true}>
+          <Route path="/react-stellar-burger/ingredients/:id" exact={true}>
             <Modal close={closeModal}>
               <IngredientDetails />
             </Modal>
           </Route>
-          <Route path="/feed/:id" exact={true}>
+          <Route path="/react-stellar-burger/feed/:id" exact={true}>
             <Modal close={closeModal}>
               <OrderInfoCommon background={background} />
             </Modal>
           </Route>
-          <Route path="/profile/orders/:id" exact={true}>
+          <Route path="/react-stellar-burger/profile/orders/:id" exact={true}>
             <Modal close={closeModal}>
               <OrderInfoPrivat background={background} />
             </Modal>
