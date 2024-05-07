@@ -8,6 +8,7 @@ import ProfileFeed from "../../components/ProfileFeed/ProfileFeed";
 import styles from "./profile.module.css";
 import { getUserInfo } from "../../services/actions/user";
 import { Route, useLocation, Switch } from "react-router-dom";
+import { routes } from "../../utils/path";
 
 export const ProfilePage = () => {
     const location = useLocation().pathname
@@ -22,10 +23,10 @@ export const ProfilePage = () => {
         <div className={styles.root}>
             <ProfileMenu />
             <Switch>
-                <Route exact={true} path="/profile">
+                <Route exact={true} path={routes.profile}>
                     <ProfileForm />
                 </Route>
-                <Route exact={true} path="/profile/orders">
+                <Route exact={true} path={routes.orders}>
                     <ProfileFeed />
                 </Route>
                 <Route>
