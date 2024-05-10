@@ -44,10 +44,11 @@ const FeedOrders = ({ order, ingredientsData }) => {
 
     return (
         <Link to={{
-            pathname: isPrivat ? `${routes.orderHistory}/${order._id}` : `${routes.orders}/${order._id}`,
+            pathname: isPrivat ? `/react-stellar-burger/profile/orders/${order._id}` : `/react-stellar-burger/feed/${order._id}`,
             state: { background: location }
         }} className={`${styles.link}`}>
             <div className={`${styles.order}`} style={{ width: isPrivat ? '830px' : '600px' }}>
+
                 <div className={`${styles.title}`}>
                     <p className="text text_type_digits-default">{`#${number}`}</p>
                     <p className="text text_type_main-default text_color_inactive"><FormattedDate date={new Date(updatedAt)} /></p>

@@ -26,7 +26,7 @@ export const ProfilePage = () => {
                 <Route exact={true} path={routes.profile}>
                     <ProfileForm />
                 </Route>
-                <Route exact={true} path={routes.orderHistory}>
+                <Route exact={true} path="/react-stellar-burger/profile/orders">
                     <ProfileFeed />
                 </Route>
                 <Route>

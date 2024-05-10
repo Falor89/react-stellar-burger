@@ -49,7 +49,7 @@ const ProfileMenu = () => {
         <div className={styles.container}>
             <nav className={styles.container}>
                 <Link className={`${styles.link} text text_type_main-medium ${activeTab.profile ? '' : styles.linkInactive}`} to={routes.profile}>Профиль</Link>
-                <Link className={`${styles.link} text text_type_main-medium ${activeTab.orders ? '' : styles.linkInactive} `} to={routes.orders}>История заказов</Link>
+                <Link className={`${styles.link} text text_type_main-medium ${activeTab.orders ? '' : styles.linkInactive} `} to={routes.orderHistory}>История заказов</Link>
                 <Button htmlType='button' onClick={onClick} className={`${styles.link} text text_type_main-medium ${styles.linkInactive}`}>Выход</Button>
             </nav>
             <p className="text text_type_main-default text_color_inactive mt-20">В этом разделе вы можете изменить свои персональные данные</p>

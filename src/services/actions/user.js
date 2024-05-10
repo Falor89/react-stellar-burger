@@ -1,6 +1,5 @@
 import { loginRequest, register, getUser, refreshRequest, logoutRequest, setUserRequest } from "../../utils/api";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookie";
-import { routes } from "../../utils/path";
 
 export const LOGIN_IN = 'LOGIN_IN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -53,7 +52,7 @@ export function login(email, password) {
         loginRequest(email, password)
             .then((data) => {
                 dispatchUserToken(data, dispatch);
-                setCookie('tokenToRefresh', data.refreshToken, { path: routes.main });
+                setCookie('tokenToRefresh', data.refreshToken, { path: '/' });
             })
             .catch((err) => {
                 dispatch({
@@ -72,7 +71,7 @@ export function registration(email, password, username) {
         register(email, password, username)
             .then((data) => {
                 dispatchUserToken(data, dispatch);
-                setCookie('tokenToRefresh', data.refreshToken, { path: routes.main });
+                setCookie('tokenToRefresh', data.refreshToken, { path: '/' });
             })
             .catch((err) => {
                 dispatch({

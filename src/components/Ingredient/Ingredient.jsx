@@ -3,7 +3,6 @@ import styles from './ingredient.module.css'
 import { useMemo } from "react";
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { OPEN_INGRIDIENT_MODAL } from '../../services/actions/modal.js';
 import { Link, useLocation } from "react-router-dom";
 import { routes } from "../../utils/path";
 

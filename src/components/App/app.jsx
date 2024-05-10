@@ -90,17 +90,17 @@ const App = () => {
       </Switch>
       {background &&
         <Switch>
-          <Route path={routes.ingredient} exact={true}>
+          <Route path="/react-stellar-burger/ingredients/:id" exact={true}>
             <Modal close={closeModal}>
               <IngredientDetails />
             </Modal>
           </Route>
-          <Route path={routes.order} exact={true}>
+          <Route path="/react-stellar-burger/feed/:id" exact={true}>
             <Modal close={closeModal}>
               <OrderInfoCommon background={background} />
             </Modal>
           </Route>
-          <Route path={routes.userOrder} exact={true}>
+          <Route path="/react-stellar-burger/profile/orders/:id" exact={true}>
             <Modal close={closeModal}>
               <OrderInfoPrivat background={background} />
             </Modal>
